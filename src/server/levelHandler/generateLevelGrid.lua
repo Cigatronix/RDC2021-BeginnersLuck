@@ -5,14 +5,14 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local LevelConfig = require(ReplicatedStorage:WaitForChild("Shared").levelConfig)
 
 --- ( Utility Functions ) ---
-local handleTile = require(script.Parent.handleTile).handleTile
+local handleTile = require(script.Parent.handleTiles).handleTile
 
 --- ( Private Functions ) ---
 local function spawnTile(previousTile, levelNumber, totalTilesSpawned)
 	local nextTilePosition = {
-		X = previousTile.PrimaryPart.Position.X,
-		Y = previousTile.PrimaryPart.Position.Y,
-		Z = previousTile.PrimaryPart.Position.Z - 4,
+		X = previousTile.position.X,
+		Y = previousTile.position.Y,
+		Z = previousTile.position.Z - 4,
 	}
 
 	local nextTile = handleTile(nextTilePosition, levelNumber, totalTilesSpawned)
@@ -55,9 +55,9 @@ local function generateLevelGrid(levelNumber)
 			initialTile = handleTile(initialTilePosition, levelNumber, 1)
 		else
 			local newColumnInitialTilePosition = {
-				X = lastTile.PrimaryPart.Position.X - 4,
-				Y = lastTile.PrimaryPart.Position.Y,
-				Z = lastTile.PrimaryPart.Position.Z + (4 * constrainedSize - 4),
+				X = lastTile.position.X - 4,
+				Y = lastTile.position.Y,
+				Z = lastTile.position.Z + (4 * constrainedSize - 4),
 			}
 
 			initialTile = handleTile(newColumnInitialTilePosition, levelNumber, totalTilesSpawned)
