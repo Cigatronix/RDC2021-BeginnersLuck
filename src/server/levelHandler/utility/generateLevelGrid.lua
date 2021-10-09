@@ -7,18 +7,12 @@ local LevelConfig = require(ReplicatedStorage:WaitForChild("Shared").levelConfig
 --- ( Utility Functions ) ---
 local handleTile = require(script.Parent.handleTile).handleTile
 
---- ( Private Variables ) ---
-local initialTileOffset = {
-	X = 14,
-	Y = 0.8,
-	Z = 14,
-}
-
+--- ( Private Functions ) ---
 local function spawnTile(previousTile, levelNumber, totalTilesSpawned)
 	local nextTilePosition = {
-		X = previousTile.X,
-		Y = previousTile.Y,
-		Z = previousTile.Z - 4,
+		X = previousTile.PrimaryPart.Position.X,
+		Y = previousTile.PrimaryPart.Position.Y,
+		Z = previousTile.PrimaryPart.Position.Z - 4,
 	}
 
 	local nextTile = handleTile(nextTilePosition, levelNumber, totalTilesSpawned)
@@ -28,11 +22,11 @@ end
 ---@param levelNumber number
 ---Generates the grid for the level number passed.
 local function generateLevelGrid(levelNumber)
-	warn("GENERATING LEVEL " .. tostring(levelNumber))
-
 	-- Verify that there is valid information for the requested level.
-	local levelGridInformation = LevelConfig[levelNumber]
+	local levelGridInformation = LevelConfig[tostring(levelNumber)]
 	assert(levelGridInformation, string.format("Expected to find grid information for level %s", tostring(levelNumber)))
+
+	local initialTileOrigin = levelGridInformation.TileOriginPosition
 
 	-- Verify that there is a model/folder or some container in workspace that holds the physical build for the level.
 	local levelBuild = workspace:FindFirstChild(string.format("Level %s", tostring(levelNumber)))
@@ -47,9 +41,9 @@ local function generateLevelGrid(levelNumber)
 
 	-- Handle the spawn and tagging of the initial tile of the level.
 	local initialTilePosition = {
-		X = tileBase.Position.X + initialTileOffset.X,
-		Y = tileBase.Position.Y + initialTileOffset.Y,
-		Z = tileBase.Position.Z + initialTileOffset.Z,
+		X = initialTileOrigin.X,
+		Y = initialTileOrigin.Y,
+		Z = initialTileOrigin.Z,
 	}
 
 	-- Handle the spawning and tagging of all other tiles in the level.
@@ -61,9 +55,9 @@ local function generateLevelGrid(levelNumber)
 			initialTile = handleTile(initialTilePosition, levelNumber, 1)
 		else
 			local newColumnInitialTilePosition = {
-				X = lastTile.Position.X - 4,
-				Y = lastTile.Position.Y,
-				Z = lastTile.Position.Z + 28,
+				X = lastTile.PrimaryPart.Position.X - 4,
+				Y = lastTile.PrimaryPart.Position.Y,
+				Z = lastTile.PrimaryPart.Position.Z + (4 * constrainedSize - 4),
 			}
 
 			initialTile = handleTile(newColumnInitialTilePosition, levelNumber, totalTilesSpawned)
@@ -73,6 +67,7 @@ local function generateLevelGrid(levelNumber)
 			initialTile,
 			string.format("There was an issue while generating the first tile in column %s", tostring(columnNumber))
 		)
+		lastTile = initialTile
 
 		for _ = 2, constrainedSize - 1, 1 do
 			totalTilesSpawned += 1
