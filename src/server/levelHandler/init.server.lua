@@ -12,5 +12,3 @@ local startGameRemote = remotesFolder.StartGame
 startGameRemote.OnServerEvent:Connect(function(player)
 	generateLevelGrid(1)
 end)
-
-generateLevelGrid(1)
