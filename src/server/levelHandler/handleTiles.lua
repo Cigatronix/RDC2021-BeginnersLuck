@@ -73,7 +73,7 @@ local function resetGrid(levelNumber)
 	local levelBuild = workspace:FindFirstChild(string.format("Level %s", tostring(levelNumber)))
 	local tileHolder = levelBuild:FindFirstChild("TileHolder")
 
-	local litTiles = CollectionService:GetTagged("NoColor")
+	local litTiles = CollectionService:GetTagged("LitTile")
 
 	for _, tile in pairs(litTiles) do
 		tile:Destroy()
