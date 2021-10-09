@@ -2,7 +2,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 --- ( Loaded Modules ) ---
-local LevelConfig = require(ReplicatedStorage:WaitForChild("levelConfig"))
+local LevelConfig = require(ReplicatedStorage:WaitForChild("Shared").levelConfig)
 
 --- ( Utility Functions ) ---
 local handleTile = require(script.Parent.handleTile).handleTile
