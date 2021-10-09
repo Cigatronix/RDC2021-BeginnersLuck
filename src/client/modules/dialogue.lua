@@ -113,11 +113,15 @@ Dialogue.Speak = function(String, Emote, Duration)
     local TimeTotal = 0
     for _, Text in ipairs(DialogueQueue) do
         TimeTotal += Text["Duration"]
-    end
-    if #DialogueQueue == 0 then
-        Duration += time()
-    end
-    table.insert(DialogueQueue, {["String"] = String, ["Emote"] = Emote, ["Duration"] = Duration})
+	end
+	if #DialogueQueue == 0 then
+		warn("Dialogue queue is 0 for "..String)
+		Duration += time()
+		table.insert(DialogueQueue, {["String"] = String, ["Emote"] = Emote, ["Duration"] = Duration}) --TODO: Delet this
+		Speak(DialogueQueue[1]["String"], DialogueQueue[1]["Emote"])
+	else
+		table.insert(DialogueQueue, {["String"] = String, ["Emote"] = Emote, ["Duration"] = Duration})
+	end
 end
 
 Dialogue.SpeakOther = function(String, EmoteEnum)
