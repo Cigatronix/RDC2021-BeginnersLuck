@@ -176,6 +176,12 @@ function handleTile(position, levelNumber, tileIndex)
 
 		local humanoidRootPart = humanoid.RootPart
 
+		gridData.isSelected = true
+
+		local newTile = tiles.NoColor:Clone()
+		newTile.Parent = tileHolder
+		newTile:SetPrimaryPartCFrame(tileToHandle.PrimaryPart.CFrame)
+
 		local canSelectTile = checkProgress(levelNumber)
 		if not canSelectTile then
 			local isAnswerValid = validateAnswer(levelNumber)
@@ -189,12 +195,6 @@ function handleTile(position, levelNumber, tileIndex)
 
 			return
 		end
-
-		gridData.isSelected = true
-
-		local newTile = tiles.NoColor:Clone()
-		newTile.Parent = tileHolder
-		newTile:SetPrimaryPartCFrame(tileToHandle.PrimaryPart.CFrame)
 
 		tileToHandle.Parent = nil
 	end)
