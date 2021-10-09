@@ -16,9 +16,9 @@ local initialTileOffset = {
 
 local function spawnTile(previousTile, levelNumber, totalTilesSpawned)
 	local nextTilePosition = {
-		X = previousTile.Position.X,
-		Y = previousTile.Position.Y,
-		Z = previousTile.Position.Z - 4,
+		X = previousTile.X,
+		Y = previousTile.Y,
+		Z = previousTile.Z - 4,
 	}
 
 	local nextTile = handleTile(nextTilePosition, levelNumber, totalTilesSpawned)
