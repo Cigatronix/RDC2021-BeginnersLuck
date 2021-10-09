@@ -76,9 +76,11 @@ local function resetGrid(levelNumber)
 	local levelBuild = workspace:FindFirstChild(string.format("Level %s", tostring(levelNumber)))
 	local tileHolder = levelBuild:FindFirstChild("TileHolder")
 
-	local litTiles = CollectionService:GetTagged("LitTile")
+	for _, tile in pairs(tileHolder:GetChildren()) do
+		if tile.Name ~= "Off" then
+			tile:Destroy()
+		end
 
-	for _, tile in pairs(litTiles) do
 		tile:Destroy()
 	end
 
@@ -195,8 +197,6 @@ function handleTile(position, levelNumber, tileIndex)
 		local newTile = tiles.NoColor:Clone()
 		newTile.Parent = tileHolder
 		newTile:SetPrimaryPartCFrame(tileToHandle.PrimaryPart.CFrame)
-
-		CollectionService:AddTag(newTile, "LitTile")
 
 		tileToHandle.Parent = nil
 	end)
