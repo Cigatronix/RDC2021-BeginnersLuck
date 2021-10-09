@@ -41,8 +41,8 @@ local function checkProgress(levelNumber)
 		end
 	end
 
-	print(totalTilesTouched + 2, requiredTiles, not (totalTilesTouched + 2 > requiredTiles))
-	return not (totalTilesTouched + 2 > requiredTiles)
+	print(totalTilesTouched + 1, requiredTiles, not (totalTilesTouched + 1 > requiredTiles))
+	return not (totalTilesTouched + 1 > requiredTiles)
 end
 
 local function validateAnswer(levelNumber)
