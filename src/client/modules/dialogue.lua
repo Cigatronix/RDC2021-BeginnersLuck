@@ -81,9 +81,9 @@ local function TweenOutMain()
     end
 end
 
-local function Speak(String, Emote)
+local function Speak(String, Emote) --Private speaking function. Also calls appropriate functions for tweening the text and face.
     if not Emotes[Emote] then
-        Emote = "NEUTRAL" --Neutral
+        Emote = "NEUTRAL"
     end
     if DialogueMain.BackgroundTransparency == 1 then
         local DialogueTweenIn = TweenService:Create(DialogueMain, GenericTweenInformation, {Position = UDim2.fromScale(0.5, 0.83), BackgroundTransparency = 0})
@@ -94,22 +94,23 @@ local function Speak(String, Emote)
     TweenFace(Emote)
 end
 
-local function ClearQueue()
+local function ClearQueue() -- Pops the front of the queue when the object is done displaying.
     if #DialogueQueue == 0 then return end
     -- warn(DialogueQueue[1]["Duration"] - time())
     if DialogueQueue[1]["Duration"] - time() <= 0 then
-        -- TweenOutText()
-        -- TweenOutFace()
-        -- TweenOutMain()
         table.remove(DialogueQueue, 1)
         if #DialogueQueue > 0 then
             DialogueQueue[1]["Duration"] += time()
             Speak(DialogueQueue[1]["String"], DialogueQueue[1]["Emote"])
+        else
+            TweenOutText()
+            TweenOutFace()
+            TweenOutMain()
         end
     end
 end
 
-Dialogue.Speak = function(String, Emote, Duration)
+Dialogue.Speak = function(String, Emote, Duration) --Public facing speak function. This adds the object to the queue, and if empty, plays it.
     local TimeTotal = 0
     for _, Text in ipairs(DialogueQueue) do
         TimeTotal += Text["Duration"]
@@ -128,6 +129,6 @@ Dialogue.SpeakOther = function(String, EmoteEnum)
     --TODO: Implement speaking for other cube
 end
 
-game:GetService("RunService").Heartbeat:Connect(ClearQueue)
+RunService.Heartbeat:Connect(ClearQueue)
 
 return Dialogue
