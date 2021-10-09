@@ -3,7 +3,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local CollectionService = game:GetService("CollectionService")
 
 --- ( Loaded Modules ) ---
-local LevelConfig = require(ReplicatedStorage:WaitForChild("levelConfig"))
+local LevelConfig = require(ReplicatedStorage:WaitForChild("Shared").levelConfig)
 
 --- ( Service References ) ---
 local tiles = ReplicatedStorage:WaitForChild("Tiles")
