@@ -41,8 +41,8 @@ local function checkProgress(levelNumber)
 		end
 	end
 
-	print(totalTilesTouched + 1, requiredTiles, not (totalTilesTouched + 1 > requiredTiles))
-	return not (totalTilesTouched + 1 > requiredTiles)
+	print(totalTilesTouched + 2, requiredTiles, not (totalTilesTouched + 2 > requiredTiles))
+	return not (totalTilesTouched + 2 > requiredTiles)
 end
 
 local function validateAnswer(levelNumber)
@@ -80,8 +80,6 @@ local function resetGrid(levelNumber)
 		if tile.Name ~= "Off" then
 			tile:Destroy()
 		end
-
-		tile:Destroy()
 	end
 
 	for _, gridData in pairs(gridState) do
