@@ -36,10 +36,13 @@ local function checkProgress(levelNumber)
 			continue
 		end
 
-		totalTilesTouched += 1
+		if gridData.isSelected then
+			totalTilesTouched += 1
+		end
 	end
 
-	return totalTilesTouched > requiredTiles
+	print(totalTilesTouched, requiredTiles, not (totalTilesTouched > requiredTiles))
+	return not (totalTilesTouched > requiredTiles)
 end
 
 local function validateAnswer(levelNumber)
@@ -84,6 +87,7 @@ local function resetGrid(levelNumber)
 			continue
 		end
 
+		gridData.isSelected = false
 		gridData.initialTileObject.Parent = tileHolder
 	end
 end
@@ -136,6 +140,7 @@ function handleTile(position, levelNumber, tileIndex)
 		level = levelNumber,
 		tileIndex = tileIndex,
 		initialTileObject = tileToHandle,
+		isSelected = false,
 		position = {
 			X = tileToHandle.PrimaryPart.Position.X,
 			Y = tileToHandle.PrimaryPart.Position.Y,
@@ -179,8 +184,10 @@ function handleTile(position, levelNumber, tileIndex)
 				humanoidRootPart.CFrame = CFrame.new(playerStart.Position)
 				resetGrid(levelNumber)
 			else
-				return warn(string.format("Player has cleared Level %s", tostring(levelNumber)))
+				warn(string.format("Player has cleared Level %s", tostring(levelNumber)))
 			end
+
+			return
 		end
 
 		local newTile = tiles.NoColor:Clone()
