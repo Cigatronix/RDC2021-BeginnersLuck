@@ -163,7 +163,7 @@ function handleTile(position, levelNumber, tileIndex)
 	end
 
 	-- Handle connections to the tile
-	tileToHandle.Touched:Connect(function(hit)
+	tileToHandle.PrimaryPart.Touched:Connect(function(hit)
 		local humanoid = hit.Parent:FindFirstChild("Humanoid")
 		if not humanoid then
 			return
@@ -185,7 +185,7 @@ function handleTile(position, levelNumber, tileIndex)
 
 		local newTile = tiles.NoColor:Clone()
 		newTile.Parent = tileHolder
-		newTile:SetPrimaryPartCFrame(tileToHandle.Position)
+		newTile:SetPrimaryPartCFrame(tileToHandle.PrimaryPart.Position)
 
 		CollectionService:AddTag(newTile, "LitTile")
 
