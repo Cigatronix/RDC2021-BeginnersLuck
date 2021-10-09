@@ -1,6 +1,11 @@
 --[[
     Testing code
 ]]
-local Dialogue = require(script.Parent.Modules.Dialogue)
+local Dialogue = require(script.modules.dialogue)
 
-Dialogue.Speak("Hello, world!")
+wait(5)
+
+local Test = {"ANGRY", "JOY", "SARCASTIC", "Test"}
+for _, k in ipairs(Test) do
+    Dialogue.Speak("This is a test of "..k, k, 3)
+end
