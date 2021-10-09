@@ -41,8 +41,8 @@ local function checkProgress(levelNumber)
 		end
 	end
 
-	print(totalTilesTouched + 1, requiredTiles, not (totalTilesTouched + 1 > requiredTiles))
-	return not (totalTilesTouched + 1 > requiredTiles)
+	print(totalTilesTouched, requiredTiles, not (totalTilesTouched >= requiredTiles))
+	return not (totalTilesTouched >= requiredTiles)
 end
 
 local function validateAnswer(levelNumber)
@@ -176,12 +176,6 @@ function handleTile(position, levelNumber, tileIndex)
 
 		local humanoidRootPart = humanoid.RootPart
 
-		gridData.isSelected = true
-
-		local newTile = tiles.NoColor:Clone()
-		newTile.Parent = tileHolder
-		newTile:SetPrimaryPartCFrame(tileToHandle.PrimaryPart.CFrame)
-
 		local canSelectTile = checkProgress(levelNumber)
 		if not canSelectTile then
 			local isAnswerValid = validateAnswer(levelNumber)
@@ -195,6 +189,12 @@ function handleTile(position, levelNumber, tileIndex)
 
 			return
 		end
+
+		gridData.isSelected = true
+
+		local newTile = tiles.NoColor:Clone()
+		newTile.Parent = tileHolder
+		newTile:SetPrimaryPartCFrame(tileToHandle.PrimaryPart.CFrame)
 
 		tileToHandle.Parent = nil
 	end)
