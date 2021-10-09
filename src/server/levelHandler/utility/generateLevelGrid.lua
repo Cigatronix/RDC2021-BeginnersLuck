@@ -47,9 +47,9 @@ local function generateLevelGrid(levelNumber)
 
 	-- Handle the spawn and tagging of the initial tile of the level.
 	local initialTilePosition = {
-		X = tileBase.Position.X + initialTileOffset.Position.X,
-		Y = tileBase.Position.Y + initialTileOffset.Position.Y,
-		Z = tileBase.Position.Z + initialTileOffset.Position.Z,
+		X = tileBase.Position.X + initialTileOffset.X,
+		Y = tileBase.Position.Y + initialTileOffset.Y,
+		Z = tileBase.Position.Z + initialTileOffset.Z,
 	}
 
 	-- Handle the spawning and tagging of all other tiles in the level.
