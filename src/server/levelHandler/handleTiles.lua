@@ -41,8 +41,8 @@ local function checkProgress(levelNumber)
 		end
 	end
 
-	print(totalTilesTouched, requiredTiles, not (totalTilesTouched > requiredTiles))
-	return not (totalTilesTouched > requiredTiles)
+	print(totalTilesTouched + 1, requiredTiles, not (totalTilesTouched + 1 > requiredTiles))
+	return not (totalTilesTouched + 1 > requiredTiles)
 end
 
 local function validateAnswer(levelNumber)
@@ -189,6 +189,8 @@ function handleTile(position, levelNumber, tileIndex)
 
 			return
 		end
+
+		gridData.isSelected = true
 
 		local newTile = tiles.NoColor:Clone()
 		newTile.Parent = tileHolder
