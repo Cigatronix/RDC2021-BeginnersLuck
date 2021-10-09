@@ -32,7 +32,15 @@ local Emotes = {
 }
 
 local function TweenText(String) --Clears current box and replaces it with some string
-    local 
+    local TextBox = DialogueMain:FindFirstChild("TextFrame")
+    if TextBox.Text ~= "" then
+        local TweenOut = TweenService:Create(TextBox, GenericTweenInformation, {MaxGraphemes = 0})
+        TweenOut:Play()
+        TweenOut.Completed:Wait()
+    end
+    TextBox.Text = String
+    local TweenIn = TweenService:Create(TextBox, GenericTweenInformation, {MaxGraphemes = -1})
+    TweenIn:Play()
 end
 
 Dialogue.Speak = function(String, EmoteEnum)
