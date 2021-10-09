@@ -8,6 +8,30 @@ local LevelConfig = require(ReplicatedStorage:WaitForChild("Shared").levelConfig
 --- ( Service References ) ---
 local tiles = ReplicatedStorage:WaitForChild("Tiles")
 
+--- ( Private Variables ) ---
+local gridState = {}
+local totalTilesTouched = 0
+
+local function findTile(position)
+	for _, gridData in pairs(gridState) do
+		if gridData.position.X ~= position.X then
+			continue
+		end
+
+		if gridData.position.Y ~= position.Y then
+			continue
+		end
+
+		if gridData.position.Z ~= position.Z then
+			continue
+		end
+
+		return gridData
+	end
+
+	return nil
+end
+
 ---@param position Vector3
 ---@param levelNumber number
 ---@param tileIndex number
@@ -24,6 +48,16 @@ local function handleTile(position, levelNumber, tileIndex)
 	tileToHandle.Parent = tileHolder
 	tileToHandle:SetPrimaryPartCFrame(CFrame.new(position.X, position.Y, position.Z))
 
+	local gridData = {
+		level = levelNumber,
+		position = {
+			X = tileToHandle.PrimaryPart.Position.X,
+			Y = tileToHandle.PrimaryPart.Position.Y,
+			Z = tileToHandle.PrimaryPart.Position.Z,
+		},
+	}
+	table.insert(gridState, gridData)
+
 	-- Assign tags via CollectionService based on the position of the tile and what level it's being spawned to.
 	for colorName, tilePositionNumber in pairs(levelGridInformation.Colors) do
 		if tilePositionNumber ~= tileIndex then
@@ -33,9 +67,24 @@ local function handleTile(position, levelNumber, tileIndex)
 		CollectionService:AddTag(tileToHandle, colorName)
 	end
 
-	return tileToHandle
+	-- Handle connections to the tile
+	tileToHandle.Touched:Connect(function(hit)
+		local humanoid = hit.Parent:FindFirstChild("Humanoid")
+		if not humanoid then
+			return
+		end
+
+		local newTile = tiles.NoColor:Clone()
+		newTile.Parent = tileHolder
+		newTile:SetPrimaryPartCFrame(tileToHandle.Position)
+
+		tileToHandle.Parent = nil
+	end)
+
+	return gridData
 end
 
 return {
 	handleTile = handleTile,
+	findTile = findTile,
 }
