@@ -185,7 +185,7 @@ function handleTile(position, levelNumber, tileIndex)
 
 		local newTile = tiles.NoColor:Clone()
 		newTile.Parent = tileHolder
-		newTile:SetPrimaryPartCFrame(tileToHandle.PrimaryPart.Position)
+		newTile:SetPrimaryPartCFrame(tileToHandle.PrimaryPart.CFrame)
 
 		CollectionService:AddTag(newTile, "LitTile")
 
