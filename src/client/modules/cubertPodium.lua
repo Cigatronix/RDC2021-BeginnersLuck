@@ -61,7 +61,7 @@ local function WeldCubert(PromptParent)
 
     local Camera = WorkspaceService.CurrentCamera
     Camera.CameraType = Enum.CameraType.Scriptable
-    local TweenToCubert = TweenService:Create(Camera, GenericTweenInformation, {Position = Cubert.Position})
+    local TweenToCubert = TweenService:Create(Camera, GenericTweenInformation, {Position = Cubert:GetPivot().Position})
     TweenToCubert:Play()
     --TODO: Check if the thing is going to be facing forward, also how should we handle rotation?
 end
