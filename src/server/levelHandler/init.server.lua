@@ -66,6 +66,10 @@ startLevel4Remote.OnServerEvent:Connect(function()
 	getOrSetGlobalLevel.setGlobalLevel(4)
 	generateLevelGrid(4)
 	EnableCubug:FireAllClients()
+	local ServerStorage = game:GetService("ServerStorage")
+	local Cubug = ServerStorage:WaitForChild("Cubug"):Clone()
+	Cubug:PivotTo(game.Players:GetPlayers()[1].Character:GetPivot())
+	Cubug.Parent = workspace
 end)
 
 local LastSelectedColor = ""
