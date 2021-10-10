@@ -17,6 +17,6 @@ UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
 	end
 end)
 
-Controls:WaitForChild("Restart").MouseButton1Click:Connect(function()
+Controls:WaitForChild("Restart").TextButton.MouseButton1Click:Connect(function()
 	resetLevelRemote:FireServer()
 end)

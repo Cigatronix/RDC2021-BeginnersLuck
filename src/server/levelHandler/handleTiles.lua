@@ -1,8 +1,6 @@
 --- ( Services ) ---
-local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local TweenService = game:GetService("TweenService")
-local CollectionService = game:GetService("CollectionService")
 
 --- ( Loaded Modules ) ---
 local LevelConfig = require(ReplicatedStorage:WaitForChild("Shared").levelConfig)
@@ -18,6 +16,7 @@ local gridState = {}
 local canStepLevel1 = true
 local canStepLevel2 = true
 local canStepLevel3 = true
+local canStepLevel4 = true
 
 --- ( Private Functions ) ---
 local function tweenTile(tileObject, tweenDown)
@@ -57,7 +56,7 @@ local function resetGrid(changeSelected)
 	local tileHolder = levelBuild:FindFirstChild("TileHolder")
 
 	for _, tile in pairs(tileHolder:GetChildren()) do
-		if tile.Name ~= "Off" then
+		if tile.Name ~= "Off" and tile.Name ~= "Broken" then
 			tile:Destroy()
 		end
 	end
@@ -119,17 +118,18 @@ local function validateAnswer()
 			continue
 		end
 
-		if not gridData.isSelected then
-			continue
-		end
-
 		for colorName, tilePositionNumbers in pairs(levelGridInformation.Colors) do
 			for _, positionNumber in pairs(tilePositionNumbers) do
+				if not gridData.isSelected then
+					continue
+				end
+
 				if gridData.tileIndex ~= positionNumber then
 					continue
 				end
 
 				matchingTiles += 1
+				print(gridData.tileIndex, matchingTiles)
 			end
 		end
 	end
@@ -316,6 +316,107 @@ local function lightUpCorrectTiles()
 			gridData.tileObject:Destroy()
 			gridData.tileObject = finalTile
 		end
+
+		elevatorDoor.Indicator.Color = Color3.fromRGB(85, 255, 127)
+
+		for _, object in pairs(cubertStation:GetDescendants()) do
+			if object:IsA("BasePart") then
+				if object.Color == Color3.fromRGB(255, 89, 89) then
+					object.Color = Color3.fromRGB(85, 255, 127)
+				end
+			end
+		end
+
+		for _, object in pairs(podiumWire:GetDescendants()) do
+			if object:IsA("BasePart") then
+				if object.Color == Color3.fromRGB(255, 89, 89) then
+					object.Color = Color3.fromRGB(85, 255, 127)
+				end
+			end
+		end
+
+		for _, object in pairs(elevatorWire:GetDescendants()) do
+			if object:IsA("BasePart") then
+				if object.Color == Color3.fromRGB(255, 89, 89) then
+					object.Color = Color3.fromRGB(85, 255, 127)
+				end
+			end
+		end
+
+		for _, gridData in pairs(gridState) do
+			if gridData.level ~= levelNumber then
+				continue
+			end
+
+			if not gridData.isSelected then
+				continue
+			end
+
+			local finalTile = tiles.Green:Clone()
+			finalTile.Parent = gridData.tileObject.Parent
+			finalTile:SetPrimaryPartCFrame(gridData.tileObject.PrimaryPart.CFrame)
+			tweenTile(finalTile, true)
+
+			gridData.tileObject:Destroy()
+			gridData.tileObject = finalTile
+		end
+	elseif levelNumber == 4 then
+		canStepLevel4 = false
+
+		elevatorDoor.Indicator.Color = Color3.fromRGB(85, 255, 127)
+
+		for _, object in pairs(cubertStation:GetDescendants()) do
+			if object:IsA("BasePart") then
+				if object.Color == Color3.fromRGB(255, 89, 89) then
+					object.Color = Color3.fromRGB(85, 255, 127)
+				end
+			end
+		end
+
+		for _, object in pairs(podiumWire:GetDescendants()) do
+			if object:IsA("BasePart") then
+				if object.Color == Color3.fromRGB(255, 89, 89) then
+					object.Color = Color3.fromRGB(85, 255, 127)
+				end
+			end
+		end
+
+		for _, object in pairs(elevatorWire:GetDescendants()) do
+			if object:IsA("BasePart") then
+				if object.Color == Color3.fromRGB(255, 89, 89) then
+					object.Color = Color3.fromRGB(85, 255, 127)
+				end
+			end
+		end
+
+		for _, gridData in pairs(gridState) do
+			if gridData.level ~= levelNumber then
+				continue
+			end
+
+			if not gridData.isSelected then
+				continue
+			end
+
+			local finalTile
+			for colorName, tilePositionNumbers in pairs(levelGridInformation.Colors) do
+				for _, positionNumber in pairs(tilePositionNumbers) do
+					if positionNumber ~= gridData.tileIndex then
+						continue
+					end
+
+					finalTile = tiles:FindFirstChild(colorName):Clone()
+				end
+			end
+
+			print(finalTile.Name, gridData.tileIndex)
+			finalTile.Parent = gridData.tileObject.Parent
+			finalTile:SetPrimaryPartCFrame(gridData.tileObject.PrimaryPart.CFrame)
+			tweenTile(finalTile, true)
+
+			gridData.tileObject:Destroy()
+			gridData.tileObject = finalTile
+		end
 	end
 end
 
@@ -343,9 +444,8 @@ end
 
 ---@param position table
 ---@param tileIndex number
-function handleTile(position, tileIndex)
+function handleTile(position, tileIndex, isBroken)
 	local levelNumber = getOrSetGlobalLevel.getGlobalLevel()
-	local levelGridInformation = LevelConfig[tostring(levelNumber)]
 
 	local levelBuild = workspace:FindFirstChild(string.format("Level %s", tostring(levelNumber)))
 
@@ -359,7 +459,13 @@ function handleTile(position, tileIndex)
 	)
 
 	-- clone and parent no-color tile and position it based off of the last spawned tiles position.
-	local tileToHandle = tiles.Off:Clone()
+	local tileToHandle
+	if isBroken then
+		tileToHandle = tiles.Broken:Clone()
+	else
+		tileToHandle = tiles.Off:Clone()
+	end
+
 	tileToHandle.Parent = tileHolder
 	tileToHandle:SetPrimaryPartCFrame(CFrame.new(position.X, position.Y, position.Z))
 
@@ -376,17 +482,6 @@ function handleTile(position, tileIndex)
 	}
 	table.insert(gridState, gridData)
 
-	-- Assign tags via CollectionService based on the position of the tile and what level it's being spawned to.
-	for colorName, tilePositionNumbers in pairs(levelGridInformation.Colors) do
-		for _, positionNumber in pairs(tilePositionNumbers) do
-			if positionNumber ~= tileIndex then
-				continue
-			end
-
-			CollectionService:AddTag(tileToHandle, string.format("Level %s - %s", tostring(levelNumber), colorName))
-		end
-	end
-
 	-- Handle connections to the tile
 	local resetTime = 0
 	tileToHandle.PrimaryPart.Touched:Connect(function(hit)
@@ -400,6 +495,10 @@ function handleTile(position, tileIndex)
 			end
 		elseif gridData.level == 3 then
 			if not canStepLevel3 then
+				return
+			end
+		elseif gridData.level == 4 then
+			if not canStepLevel4 then
 				return
 			end
 		end
@@ -420,7 +519,6 @@ function handleTile(position, tileIndex)
 
 		local canSelectTile = checkProgress()
 		if not canSelectTile then
-			gridData.isSelected = true
 			local isAnswerValid = validateAnswer()
 
 			if not isAnswerValid then
@@ -439,7 +537,14 @@ function handleTile(position, tileIndex)
 			end
 		end
 
-		local newTile = tiles.NoColor:Clone()
+		local newTile
+		if gridData.tileObject.Name == "Broken" then
+			newTile = tiles.BrokenNoColor:Clone()
+			print("Parenting new broken tile")
+		else
+			newTile = tiles.NoColor:Clone()
+		end
+
 		newTile.Parent = tileHolder
 		newTile:SetPrimaryPartCFrame(tileToHandle.PrimaryPart.CFrame)
 		tweenTile(newTile, true)

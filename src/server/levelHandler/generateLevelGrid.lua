@@ -9,16 +9,14 @@ local handleTile = require(script.Parent.handleTiles).handleTile
 local getOrSetGlobalLevel = require(ReplicatedStorage:WaitForChild("Shared").utility.getOrSetGlobalLevel)
 
 --- ( Private Functions ) ---
-local function spawnTile(previousTile, totalTilesSpawned)
-	local levelNumber = getOrSetGlobalLevel.getGlobalLevel()
-
+local function spawnTile(previousTile, totalTilesSpawned, isBroken)
 	local nextTilePosition = {
 		X = previousTile.position.X,
 		Y = previousTile.position.Y,
 		Z = previousTile.position.Z - 4,
 	}
 
-	local nextTile = handleTile(nextTilePosition, totalTilesSpawned)
+	local nextTile = handleTile(nextTilePosition, totalTilesSpawned, isBroken)
 	return nextTile
 end
 
@@ -56,7 +54,11 @@ local function generateLevelGrid()
 	for columnNumber = 1, constrainedSize, 1 do
 		local initialTile
 		if columnNumber == 1 then
-			initialTile = handleTile(initialTilePosition, 1)
+			if levelNumber == 4 then
+				initialTile = handleTile(initialTilePosition, 1, true)
+			else
+				initialTile = handleTile(initialTilePosition, 1, false)
+			end
 		else
 			local newColumnInitialTilePosition = {
 				X = lastTile.position.X - 4,
@@ -65,7 +67,7 @@ local function generateLevelGrid()
 			}
 
 			totalTilesSpawned += 1
-			initialTile = handleTile(newColumnInitialTilePosition, totalTilesSpawned)
+			initialTile = handleTile(newColumnInitialTilePosition, totalTilesSpawned, columnNumber)
 		end
 
 		assert(
@@ -74,10 +76,15 @@ local function generateLevelGrid()
 		)
 		lastTile = initialTile
 
-		for _ = 2, constrainedSize - 1, 1 do
+		for i = 2, constrainedSize - 1, 1 do
 			totalTilesSpawned += 1
 
-			local newTile = spawnTile(lastTile, totalTilesSpawned)
+			local newTile
+			if i <= 4 then
+				newTile = spawnTile(lastTile, totalTilesSpawned, true)
+			else
+				newTile = spawnTile(lastTile, totalTilesSpawned, false)
+			end
 			lastTile = newTile
 		end
 

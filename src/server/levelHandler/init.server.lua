@@ -13,16 +13,17 @@ local remotesFolder = ReplicatedStorage:WaitForChild("Remotes")
 local startLevel1Remote = remotesFolder.StartLevel1
 local startLevel2Remote = remotesFolder.StartLevel2
 local startLevel3Remote = remotesFolder.StartLevel3
+local startLevel4Remote = remotesFolder.StartLevel4
 local resetLevelRemote = remotesFolder.ResetLevel
 
-getOrSetGlobalLevel.setGlobalLevel(3)
+getOrSetGlobalLevel.setGlobalLevel(1)
 
 --- ( Connections ) ---
 startLevel1Remote.OnServerEvent:Connect(function()
 	--getOrSetGlobalLevel.setGlobalLevel(1)
 	--generateLevelGrid(1)
-	getOrSetGlobalLevel.setGlobalLevel(3)
-	generateLevelGrid(3)
+	getOrSetGlobalLevel.setGlobalLevel(4)
+	generateLevelGrid(4)
 end)
 
 startLevel2Remote.OnServerEvent:Connect(function()
@@ -33,6 +34,11 @@ end)
 startLevel3Remote.OnServerEvent:Connect(function()
 	getOrSetGlobalLevel.setGlobalLevel(3)
 	generateLevelGrid(3)
+end)
+
+startLevel4Remote.OnServerEvent:Connect(function()
+	getOrSetGlobalLevel.setGlobalLevel(4)
+	generateLevelGrid(4)
 end)
 
 resetLevelRemote.OnServerEvent:Connect(function()
