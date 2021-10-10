@@ -460,7 +460,7 @@ function handleTile(position, tileIndex, isBroken)
 
 	-- clone and parent no-color tile and position it based off of the last spawned tiles position.
 	local tileToHandle
-	if isBroken then
+	if isBroken and levelNumber == 4 then
 		tileToHandle = tiles.Broken:Clone()
 	else
 		tileToHandle = tiles.Off:Clone()
