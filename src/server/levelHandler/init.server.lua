@@ -17,6 +17,8 @@ local startLevel3Remote = remotesFolder.StartLevel3
 local startLevel4Remote = remotesFolder.StartLevel4
 local resetLevelRemote = remotesFolder.ResetLevel
 local LightRemote = remotesFolder.LightSpecificTileColor
+local ToggleCubug = remotesFolder.ToggleCubug
+local EnableCubug = remotesFolder.EnableCubug
 
 getOrSetGlobalLevel.setGlobalLevel(1)
 
@@ -63,11 +65,15 @@ startLevel4Remote.OnServerEvent:Connect(function()
 
 	getOrSetGlobalLevel.setGlobalLevel(4)
 	generateLevelGrid(4)
+	EnableCubug:FireAllClients()
 end)
 
 local LastSelectedColor = ""
 
-LightRemote.OnServerEvent:Connect(function(_, color)
+LightRemote.OnServerEvent:Connect(function(Player, color)
+	if Player:GetAttribute("CUBUG_ON") == true then
+		color = "Broken"..color
+	end
 	if color == "" or (LastSelectedColor ~= "" and color ~= LastSelectedColor) then
 		resetGrid(false)
 	end
@@ -82,4 +88,12 @@ resetLevelRemote.OnServerEvent:Connect(function()
 	end
 
 	resetGrid(true)
+end)
+
+ToggleCubug.OnServerEvent:Connect(function(Player)
+	Player:SetAttribute("CUBUG_ON", not Player:GetAttribute("CUBUG_ON"))
+end)
+
+game.Players.PlayerAdded:Connect(function(Player)
+	Player:SetAttribute("CUBUG_ON", false)
 end)

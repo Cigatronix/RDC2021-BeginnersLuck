@@ -4,6 +4,7 @@ local ColorControls = require(script.modules.colorcontrols)
 local CubertPodium = require(script.modules.cubertPodium)
 local ElevatorControl = require(script.modules.elevatorControl)
 local LevelDialogue = require(script.levelDialogue)
+local Cubug = require(script.modules.cubug)
 
 local Dialogue1 = LevelDialogue[1][1]
 local Dialogue2 = LevelDialogue[1][2]
@@ -21,6 +22,7 @@ Dialogue.Speak(Dialogue3[1], Dialogue3[2], Dialogue3[3], Dialogue3[4], Dialogue3
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local remotes = ReplicatedStorage:WaitForChild("Remotes")
 
+local enableCubugRemote = remotes.EnableCubug
 local level1Folder = workspace:FindFirstChild("Level 1")
 local level2Folder = workspace:FindFirstChild("Level 2")
 local level3Folder = workspace:FindFirstChild("Level 3")
@@ -85,4 +87,8 @@ remotes.Level3Complete.OnClientEvent:Connect(function()
 		ElevatorControl.openLevel4Entrance()
 		Dialogue.Speak(Dialogue11[1], Dialogue11[2], Dialogue11[3], Dialogue11[4])
 	end)
+end)
+
+enableCubugRemote.OnClientEvent:Connect(function()
+	Cubug.Initialize()
 end)
