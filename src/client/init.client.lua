@@ -13,6 +13,8 @@ local LevelDialogue = require(ReplicatedStorage.Shared.strings.levelDialogue)
 --     end
 -- end
 --
-local StartLevel = LevelDialogue[1][1]
+local Dialogue1 = LevelDialogue[1][1]
+local Dialogue2 = LevelDialogue[1][1]
 
-Dialogue.Speak(StartLevel[1], StartLevel[2], StartLevel[3], StartLevel[4])
+Dialogue.Speak(Dialogue1[1], Dialogue1[2], Dialogue1[3], Dialogue1[4])
+Dialogue.Speak(Dialogue2[1], Dialogue2[2], Dialogue2[3], Dialogue2[4])

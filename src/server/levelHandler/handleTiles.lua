@@ -420,6 +420,42 @@ local function lightUpCorrectTiles()
 end
 
 --- ( Public Functions ) ---
+function lightSpecificTileColor(specifiedColor)
+	local levelNumber = getOrSetGlobalLevel.getGlobalLevel()
+	local levelGridInformation = LevelConfig[tostring(levelNumber)]
+
+	local levelBuild = workspace:FindFirstChild(string.format("Level %s", tostring(levelNumber)))
+	local tileHolder = levelBuild:FindFirstChild("TileHolder")
+
+	for _, gridData in pairs(gridState) do
+		if gridData.level ~= levelNumber then
+			continue
+		end
+
+		if not gridData.isSelected then
+			continue
+		end
+
+		for colorName, tilePositionNumbers in pairs(levelGridInformation.Colors) do
+			for _, positionNumber in pairs(tilePositionNumbers) do
+				if colorName ~= specifiedColor then
+					continue
+				end
+
+				if gridData.tileIndex ~= positionNumber then
+					continue
+				end
+
+				local temporaryTile = tiles:FindFirstChlid(specifiedColor)
+				temporaryTile.Parent = tileHolder
+				temporaryTile:SetPrimaryPartCFrame(gridState.tileObject.PrimaryPart.CFrame)
+
+				gridState.tileObject.Parent = nil
+			end
+		end
+	end
+end
+
 ---@param position table
 function findTile(position)
 	for _, gridData in pairs(gridState) do
@@ -557,5 +593,6 @@ end
 return {
 	handleTile = handleTile,
 	findTile = findTile,
+	lightSpecificTileColor = lightSpecificTileColor,
 	resetGrid = resetGrid,
 }
