@@ -25,24 +25,24 @@ local function UnweldCubert()
     end
 
     local Camera = WorkspaceService.CurrentCamera
-    local TweenToPlayer = TweenService:Create(Camera, GenericTweenInformation, {CFrame = Character:GetPivot().Position + (Character:GetPivot().UpVector * 2)})
+    local TweenToPlayer = TweenService:Create(Camera, GenericTweenInformation, {CFrame = CFrame.new(Character:GetPivot().Position + (Character:GetPivot().UpVector * 2), Character:GetPivot().Position)})
     TweenToPlayer:Play()
     TweenToPlayer.Completed:Wait()
     Camera.CameraType = Enum.CameraType.Custom
 end
 
 local function WeldCubert(PromptParent)
+    local PodiumBase = PromptParent.Parent.Parent:FindFirstChild("Base")
     local Base = PromptParent.Parent.Parent.Parent:FindFirstChild("Base")
-    if not Base then
-        Base = PromptParent
-    end
+    print(PromptParent.Parent.Parent.Parent)
+    print(Base)
     if CubertWeld then 
         UnweldCubert() 
     end
-    Cubert:PivotTo(Base:GetPivot() + Vector3.new(0,Cubert.PrimaryPart.Size.Y/2,0))
+    Cubert:PivotTo(PodiumBase:GetPivot() + Vector3.new(0,Cubert.PrimaryPart.Size.Y/2,0))
     CubertWeld = Instance.new("WeldConstraint")
     CubertWeld.Part0 = Cubert.PrimaryPart
-    CubertWeld.Part1 = Base
+    CubertWeld.Part1 = PodiumBase
     CubertWeld.Parent = Cubert.PrimaryPart
 
     --[[
