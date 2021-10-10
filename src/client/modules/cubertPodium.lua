@@ -5,6 +5,7 @@ local TweenService = game:GetService("TweenService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Remotes = ReplicatedStorage:WaitForChild("Remotes")
 local LightSpecificTileColor = Remotes:WaitForChild("LightSpecificTileColor")
+local ResetGridFromBirdsEyeView = ReplicatedStorage:WaitForChild("Remotes").ResetGridFromBirdsEyeView
 
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
@@ -131,11 +132,13 @@ UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
 		and ExitCubert.Visible == true
 	then
 		ToggleCubertWeld(LastPrompt, nil)
+		ResetGridFromBirdsEyeView:FireServer()
 	end
 end)
 
 ExitCubert.TextButton.MouseButton1Click:Connect(function()
 	ToggleCubertWeld(LastPrompt, nil)
+	ResetGridFromBirdsEyeView:FireServer()
 end)
 
 return CubertPodium

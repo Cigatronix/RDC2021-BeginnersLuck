@@ -25,6 +25,7 @@ local SkipLevel1 = remotesFolder.SkipLevel1
 local Level1Complete = remotesFolder.Level1Complete
 local Explosion = remotesFolder.Explosion
 local ToggleColor = remotesFolder.ToggleColor
+local ResetGridFromBirdsEyeView = remotesFolder.ResetGridFromBirdsEyeView
 
 getOrSetGlobalLevel.setGlobalLevel(1)
 
@@ -107,6 +108,10 @@ Explosion.OnServerEvent:Connect(function(player)
 	explosion.Position = Lobby_NextLevelElevatorInside.Position
 	explosion.BlastRadius = 30
 	explosion.BlastPressure = 2
+end)
+
+ResetGridFromBirdsEyeView.OnServerEvent:Connect(function(player)
+	resetGrid(false)
 end)
 
 local lastSelectedColor = ""
