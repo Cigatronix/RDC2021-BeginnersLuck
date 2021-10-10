@@ -14,7 +14,8 @@ local startLevel2Remote = remotesFolder.StartLevel2
 local startLevel3Remote = remotesFolder.StartLevel3
 
 startLevel1Remote.OnServerEvent:Connect(function()
-	generateLevelGrid(1)
+	--generateLevelGrid(1)
+	generateLevelGrid(2)
 end)
 
 startLevel2Remote.OnServerEvent:Connect(function()
