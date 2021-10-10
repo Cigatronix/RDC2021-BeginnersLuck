@@ -33,16 +33,12 @@ local function UnweldCubert()
 	end
 
 	local Camera = WorkspaceService.CurrentCamera
-	local TweenToPlayer = TweenService:Create(
-		Camera,
-		GenericTweenInformation,
-		{
-			CFrame = CFrame.new(
-				Character:GetPivot().Position + (Character:GetPivot().UpVector * 2),
-				Character:GetPivot().Position
-			),
-		}
-	)
+	local TweenToPlayer = TweenService:Create(Camera, GenericTweenInformation, {
+		CFrame = CFrame.new(
+			Character:GetPivot().Position + (Character:GetPivot().UpVector * 2),
+			Character:GetPivot().Position
+		),
+	})
 	TweenToPlayer:Play()
 	TweenToPlayer.Completed:Wait()
 	Camera.CameraType = Enum.CameraType.Custom
@@ -51,8 +47,6 @@ end
 local function WeldCubert(PromptParent)
 	local PodiumBase = PromptParent.Parent:FindFirstChild("Base")
 	local Base = PromptParent.Parent.Parent:FindFirstChild("Base")
-	print(PromptParent.Parent.Parent)
-	print(Base.Material)
 	if CubertWeld then
 		UnweldCubert()
 	end
@@ -115,10 +109,16 @@ local function ToggleCubertWeld(Prompt, PromptParent)
 	LastPrompt = Prompt
 end
 
-for _, Prompt in ipairs(CollectionService:GetTagged("CUBERT_PROMPT")) do
-	Prompt.Triggered:Connect(function()
-		ToggleCubertWeld(Prompt, Prompt.Parent)
-	end)
+CubertPodium.LoadPrompts = function()
+	for _, prompt in pairs(workspace:GetDescendants()) do
+		if not prompt:IsA("ProximityPrompt") then
+			continue
+		end
+
+		prompt.Triggered:Connect(function()
+			ToggleCubertWeld(prompt, prompt.Parent)
+		end)
+	end
 end
 
 UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)

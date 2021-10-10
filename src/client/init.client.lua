@@ -7,6 +7,8 @@ local RunService = game:GetService("RunService")
 local ElevatorControl = require(script.elevatorControl)
 local DialogueHandler = require(script.dialogueHandler)
 local Cubug = require(script.modules.cubug)
+local CubertPoduim = require(script.modules.cubertPodium)
+local ColorControls = require(script.modules.colorcontrols)
 
 --- ( Service References ) ---
 local player = Players.LocalPlayer
@@ -45,6 +47,9 @@ local instance3 = level3Folder.NextLevelElevatorInside.Floor
 
 --- ( Module Start ) ===
 DialogueHandler.setCoreGui(false)
+
+CubertPoduim.LoadPrompts()
+ColorControls.HandleColorButtons()
 
 DialogueHandler.displayDialogue("Cubert", 1, true)
 DialogueHandler.displayDialogue("Cubert", 2, true)

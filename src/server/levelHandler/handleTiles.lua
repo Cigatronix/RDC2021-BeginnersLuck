@@ -390,6 +390,7 @@ end
 
 --- ( Public Functions ) ---
 function lightSpecificTileColor(specifiedColor)
+	print("displaying " .. specifiedColor)
 	local levelNumber = getOrSetGlobalLevel.getGlobalLevel()
 	local levelGridInformation = LevelConfig[tostring(levelNumber)]
 
@@ -402,11 +403,11 @@ function lightSpecificTileColor(specifiedColor)
 		end
 
 		for colorName, tilePositionNumbers in pairs(levelGridInformation.Colors) do
-			for _, positionNumber in pairs(tilePositionNumbers) do
-				if colorName ~= specifiedColor then
-					continue
-				end
+			if colorName ~= specifiedColor then
+				continue
+			end
 
+			for _, positionNumber in pairs(tilePositionNumbers) do
 				if gridData.tileIndex ~= positionNumber then
 					continue
 				end

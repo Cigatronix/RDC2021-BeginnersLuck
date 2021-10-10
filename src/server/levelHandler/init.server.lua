@@ -11,17 +11,20 @@ local getTimeUntilAvailableReset = require(ReplicatedStorage:WaitForChild("Share
 
 --- ( Remotes ) ---
 local remotesFolder = ReplicatedStorage:WaitForChild("Remotes")
+
 local startLevel1Remote = remotesFolder.StartLevel1
 local startLevel2Remote = remotesFolder.StartLevel2
 local startLevel3Remote = remotesFolder.StartLevel3
 local startLevel4Remote = remotesFolder.StartLevel4
 local resetLevelRemote = remotesFolder.ResetLevel
+
 local LightRemote = remotesFolder.LightSpecificTileColor
 local ToggleCubug = remotesFolder.ToggleCubug
 local EnableCubug = remotesFolder.EnableCubug
 local SkipLevel1 = remotesFolder.SkipLevel1
 local Level1Complete = remotesFolder.Level1Complete
 local Explosion = remotesFolder.Explosion
+local ToggleColor = remotesFolder.ToggleColor
 
 getOrSetGlobalLevel.setGlobalLevel(1)
 
@@ -74,23 +77,6 @@ startLevel4Remote.OnServerEvent:Connect(function()
 	Cubug.Parent = workspace
 end)
 
-local LastSelectedColor = ""
-
-LightRemote.OnServerEvent:Connect(function(Player, color)
-	if not color then
-		return
-	end
-
-	if Player:GetAttribute("CUBUG_ON") == true then
-		color = "Broken" .. color
-	end
-	if color == "" or (LastSelectedColor ~= "" and color ~= LastSelectedColor) then
-		resetGrid(false)
-	end
-	LightSpecificTileColor(color)
-	LastSelectedColor = color
-end)
-
 resetLevelRemote.OnServerEvent:Connect(function()
 	local timeUntilNextReset = getTimeUntilAvailableReset.getTimeUntilAvailableReset()
 	if timeUntilNextReset ~= 0 then
@@ -121,6 +107,34 @@ Explosion.OnServerEvent:Connect(function(player)
 	explosion.Position = Lobby_NextLevelElevatorInside.Position
 	explosion.BlastRadius = 30
 	explosion.BlastPressure = 2
+end)
+
+local lastSelectedColor = ""
+local lastReceived = 0
+ToggleColor.OnServerEvent:Connect(function(player, specifiedColor)
+	local now = time()
+	if now - lastReceived < 0.4 then
+		return
+	end
+	lastReceived = now
+
+	player:SetAttribute("SELECTED_COLOR", specifiedColor)
+
+	if not specifiedColor then
+		return warn("No color")
+	end
+
+	if player:GetAttribute("CUBUG_ON") == true then
+		specifiedColor = "Broken" .. specifiedColor
+	end
+
+	if specifiedColor == "" or (lastSelectedColor ~= "" and specifiedColor ~= lastSelectedColor) then
+		resetGrid(false)
+	end
+
+	LightSpecificTileColor(specifiedColor)
+
+	lastSelectedColor = specifiedColor
 end)
 
 game.Players.PlayerAdded:Connect(function(Player)
