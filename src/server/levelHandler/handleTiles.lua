@@ -137,6 +137,9 @@ local function lightUpCorrectTiles(levelNumber)
 		local cubertStation = levelBuild:FindFirstChild("Cubert Podium")
 		local podiumWire = levelBuild:FindFirstChild("Podium Wire")
 		local elevatorWire = levelBuild:FindFirstChild("Elevator Wire")
+		local elevatorDoor = levelBuild:FindFirstChild("ElevatorDoorLevel2")
+
+		elevatorDoor.Indicator.Color = Color3.fromRGB(85, 255, 127)
 
 		for _, object in pairs(cubertStation:GetDescendants()) do
 			if object:IsA("BasePart") then

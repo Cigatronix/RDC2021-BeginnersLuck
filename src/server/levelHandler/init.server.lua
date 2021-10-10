@@ -24,5 +24,3 @@ end)
 startLevel3Remote.OnServerEvent:Connect(function()
 	generateLevelGrid(3)
 end)
-
-generateLevelGrid(1)
