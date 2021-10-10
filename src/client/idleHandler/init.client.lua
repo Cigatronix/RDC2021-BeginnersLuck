@@ -2,8 +2,6 @@
 local Players = game:GetService("Players")
 local Lighting = game:GetService("Lighting")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local RunService = game:GetService("RunService")
-local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 
 --- ( Loaded Modules ) ---
@@ -124,6 +122,10 @@ function playIdleAnim(loading)
 			animation:Play()
 			animation.Completed:Wait()
 		end)
+	else
+		idle.PlayButton.Visible = false
+		idle.Thanks.Visible = true
+		idle.Logo.Position = UDim2.new(0.5, 0, 0.444, 0)
 	end
 end
 

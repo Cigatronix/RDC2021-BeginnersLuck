@@ -36,6 +36,10 @@ local explosion = remotes.Explosion
 
 local enabledCubugRemote = remotes.EnableCubug
 
+--- ( Interface ) ---
+local playerGui = player:WaitForChild("PlayerGui")
+local hud = playerGui:WaitForChild("HUD")
+
 --- ( Private Variables ) ---
 local hasInteractedWithLobbyDoor = false
 local Lobby_NextLevelElevatorInside = lobbyFolder.NextLevelElevatorInside.Floor
@@ -151,6 +155,10 @@ level4Complete.OnClientEvent:Connect(function()
 	DialogueHandler.displayDialogue("Cubert", 991, true)
 	DialogueHandler.displayDialogue("Cubug", 992, true)
 	DialogueHandler.displayDialogue("Cubert", 993, false)
+
+	hud.Enabled = false
+	hud.Parent.Idle.Enabled = false
+	hud.Parent.BSOD.Enabled = true
 end)
 
 enabledCubugRemote.OnClientEvent:Connect(function()
