@@ -118,8 +118,6 @@ level2Complete.OnClientEvent:Connect(function()
 		humanoidRootPart.CFrame = CFrame.new(level3Folder.Level3Tele.Position)
 		ElevatorControl.openLevel3Entrance()
 		startLevel3:FireServer()
-
-		DialogueHandler.displayDialogue("Cubert", 8, false)
 	end)
 end)
 
