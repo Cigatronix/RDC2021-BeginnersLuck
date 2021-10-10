@@ -1,0 +1,70 @@
+{
+    "EMOTES": {
+        "NEUTRAL": "rbxassetid://7693330000",
+        "ANGRY": "rbxassetid://7693970942",
+        "SARCASTIC": "rbxassetid://7693966885",
+        "JOY": "rbxassetid://7693966628"
+    },
+    "DIALOGUE": {
+        "Cubert": {
+            "1": {
+                "Text": "Hey there!",
+                "Emotion": "JOY",
+                "Duration": 1
+            },
+            "2": {
+                "Text": "Looks like you're new around here, huh?",
+                "Emotion": "SARCASTIC",
+                "Duration": 1,
+                "Action": "OpenLobbyElevator"
+            },
+            "3": {
+                "Text": "But let's get started anyways! Step into the elevator to begin.",
+                "Emotion": "SARCASTIC",
+                "Duration": 1,
+                "Action": "ListenForLobbyConnections"
+            },
+            "4": {
+                "Text": "Welcome to the Tile Trials! I hope you're ready to solve some puzzles.",
+                "Emotion": "JOY",
+                "Duration": 1
+            },
+            "5": {
+                "Text": "Because if you're not...you're gonna have a bad time.",
+                "Emotion": "SARCASTIC",
+                "Duration": 1,
+                "Action": "OpenLevel1Entrance"
+            },
+            "6": {
+                "Text": "Here's the deal - step on these buttons in the right pattern, and you get to move on! Simple as that.",
+                "Emotion": "NEUTRAL",
+                "Duration": 1
+            },
+            "7": {
+                "Text": "Hopefully this works this time... Try to step on the colored tiles again.",
+                "Emotion": "NEUTRAL",
+                "Duration": 1
+            },
+            "8": {
+                "Text": "Nice job, you did it! But it won't be this simple next time.",
+                "Emotion": "JOY",
+                "Duration": 1
+            },
+            "9": {
+                "Text": "For this one, you'll have to put me at the station to check which tiles are correct.",
+                "Emotion": "NEUTRAL",
+                "Duration": 1
+            },
+            "10": {
+                "Text": "..Don't put me down anywhere else. Please.",
+                "Emotion": "ANGRY",
+                "Duration": 1
+            },
+            "11": {
+                "Text": "Nice one. Hopefully the next one won't take you too long.",
+                "Emotion": "ANGRY",
+                "Duration": 1
+            }
+        }
+    }
+}
