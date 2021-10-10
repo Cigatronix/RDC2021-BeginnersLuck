@@ -32,10 +32,10 @@ local function UnweldCubert()
 end
 
 local function WeldCubert(PromptParent)
-    local PodiumBase = PromptParent.Parent.Parent:FindFirstChild("Base")
-    local Base = PromptParent.Parent.Parent.Parent:FindFirstChild("Base")
-    print(PromptParent.Parent.Parent.Parent)
-    print(Base)
+    local PodiumBase = PromptParent.Parent:FindFirstChild("Base")
+    local Base = PromptParent.Parent.Parent:FindFirstChild("Base")
+    print(PromptParent.Parent.Parent)
+    print(Base.Material)
     if CubertWeld then 
         UnweldCubert() 
     end
