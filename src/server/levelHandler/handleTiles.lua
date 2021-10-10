@@ -268,7 +268,6 @@ local function lightUpCorrectTiles()
 		local playerObject = Players:FindFirstChildOfClass("Player")
 		remotes.Level2Complete:FireClient(playerObject)
 	elseif levelNumber == 3 then
-		warn("Completed level 3")
 		canStepLevel3 = false
 
 		elevatorDoor.Indicator.Color = Color3.fromRGB(85, 255, 127)
@@ -376,7 +375,6 @@ local function lightUpCorrectTiles()
 				end
 			end
 
-			print(finalTile.Name, gridData.tileIndex)
 			finalTile.Parent = gridData.tileObject.Parent
 			finalTile:SetPrimaryPartCFrame(gridData.tileObject.PrimaryPart.CFrame)
 			tweenTile(finalTile, true)
