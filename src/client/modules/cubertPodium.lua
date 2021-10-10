@@ -6,6 +6,8 @@ local TweenService = game:GetService("TweenService")
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 
+local colorUIToggle = require(script.Parent.colorUIToggle)
+
 local GenericTweenInformation = TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
 
 local CubertWeld
@@ -43,9 +45,9 @@ local function WeldCubert(PromptParent)
         TODO:
             - Anchor player -> WalkSpeed 0 //
             - Fade to black (or maybe tween camera? /shrug)
-            - UI on
-            - View on
-            - Camera set to base
+            - UI on //TODO: Add tweening to color UI
+            - View on --> It might just work by default?
+            - Camera set to base //
 
 
             - Invisible player's cube //
@@ -68,9 +70,11 @@ local function ToggleCubertWeld(Prompt, PromptParent)
     if Cubert:GetAttribute("IS_WELDED") == true then
         UnweldCubert()
         Prompt.ActionText = "Add cubert"
+        colorUIToggle.Disable()
     else
         WeldCubert(PromptParent)
         Prompt.ActionText = "Remove cubert"
+        colorUIToggle.Enable()
     end
 end
 

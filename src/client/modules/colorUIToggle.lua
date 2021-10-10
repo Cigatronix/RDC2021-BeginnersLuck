@@ -16,6 +16,18 @@ if LocalPlayer:GetAttribute("SELECTED_COLOR") == nil then
     LocalPlayer:SetAttribute("SELECTED_COLOR", "") 
 end
 
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+local HUD = PlayerGui:WaitForChild("HUD")
+local ColorFrame = HUD:WaitForChild("ColorFrame")
+
+colorUIToggle.Enable = function()
+    ColorFrame.Visible = true
+end
+
+colorUIToggle.Disable = function()
+    ColorFrame.Visible = false
+end
+
 colorUIToggle.ToggleColor = function(ColorName)
     if table.find(Stage2Colors, ColorName) then
         if LocalPlayer:GetAttribute("HAS_SPLIT") == nil or LocalPlayer:GetAttribute("HAS_SPLIT") == false then --Player has pressed the button before unlocking stage 2
