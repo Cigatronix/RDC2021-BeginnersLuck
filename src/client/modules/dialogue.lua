@@ -27,6 +27,7 @@ local GenericTweenInformation = TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.E
 
 --- ( Utility ) ---
 local getOrSetGlobalLevel = require(ReplicatedStorage:WaitForChild("Shared").utility.getOrSetGlobalLevel)
+local ElevatorControl = require(script.Parent.elevatorControl)
 
 --UI Elements
 local HUD = PlayerGui:WaitForChild("HUD")
@@ -40,6 +41,38 @@ local Emotes = {
 	["SARCASTIC"] = "rbxassetid://7693966885",
 	["JOY"] = "rbxassetid://7693966628",
 }
+
+local lobbyFolder = workspace:FindFirstChild("Lobby")
+local level1Folder = workspace:FindFirstChild("Level 1")
+local LevelDialogue = require(script.Parent.Parent.levelDialogue)
+
+local touchedLobby = false
+function listenForLobbyConnections()
+	local Dialogue4 = LevelDialogue[2][1]
+	local Dialogue5 = LevelDialogue[2][2]
+	local Dialogue6 = LevelDialogue[3][1]
+
+	local nextLevelElevatorInside = lobbyFolder.NextLevelElevatorInside.Floor
+
+	nextLevelElevatorInside.Touched:Connect(function(hit)
+		if not hit.Parent:FindFirstChild("Humanoid") then
+			return
+		end
+
+		if touchedLobby then
+			return
+		end
+		touchedLobby = true
+
+		local humanoidRootPart = hit.Parent:FindFirstChild("Humanoid").RootPart
+
+		humanoidRootPart.CFrame = CFrame.new(level1Folder.Level1Tele.Position)
+
+		Dialogue.Speak(Dialogue4[1], Dialogue4[2], Dialogue4[3], Dialogue4[4])
+		Dialogue.Speak(Dialogue5[1], Dialogue5[2], Dialogue5[3], Dialogue5[4], Dialogue5[5])
+		Dialogue.Speak(Dialogue6[1], Dialogue6[2], Dialogue6[3], Dialogue6[4])
+	end)
+end
 
 local function TweenOutText()
 	local TextBox = DialogueMain:FindFirstChild("TextFrame")
@@ -93,7 +126,7 @@ local function TweenOutMain()
 	end
 end
 
-local function Speak(String, Emote, Callback) --Private speaking function. Also calls appropriate functions for tweening the text and face.
+local function Speak(String, Emote, CallbackType) --Private speaking function. Also calls appropriate functions for tweening the text and face.
 	if not Emotes[Emote] then
 		Emote = "NEUTRAL"
 	end
@@ -109,8 +142,14 @@ local function Speak(String, Emote, Callback) --Private speaking function. Also 
 	TweenText(String)
 	TweenFace(Emote)
 
-	if Callback then
-		Callback()
+	if CallbackType then
+		if CallbackType == "OpenLobbyElevator" then
+			ElevatorControl.openLobbyElevator()
+		elseif CallbackType == "OpenLevel1Entrance" then
+			ElevatorControl.openLevel1Entrance()
+		elseif CallbackType == "ListenForLobbyConnections" then
+			listenForLobbyConnections()
+		end
 	end
 end
 
@@ -152,7 +191,7 @@ local function ClearQueue() -- Pops the front of the queue when the object is do
 end
 
 Dialogue.Speak =
-	function(String, Emote, Duration, RemoteTag, Callback) --Public facing speak function. This adds the object to the queue, and if empty, plays it.
+	function(String, Emote, Duration, RemoteTag, CallbackType) --Public facing speak function. This adds the object to the queue, and if empty, plays it.
 		local TimeTotal = 0
 		for _, Text in ipairs(DialogueQueue) do
 			TimeTotal += Text["Duration"]
@@ -163,12 +202,12 @@ Dialogue.Speak =
 			["Emote"] = Emote,
 			["Duration"] = Duration,
 			["RemoteTag"] = RemoteTag,
-			["Callback"] = Callback,
+			["CallbackType"] = CallbackType,
 		})
 
 		Duration += time()
-		if DialogueQueue[1]["Callback"] then
-			Speak(DialogueQueue[1]["String"], DialogueQueue[1]["Emote"], DialogueQueue[1]["Callback"])
+		if CallbackType then
+			Speak(DialogueQueue[1]["String"], DialogueQueue[1]["Emote"], CallbackType)
 		else
 			Speak(DialogueQueue[1]["String"], DialogueQueue[1]["Emote"])
 		end

@@ -1,8 +1,10 @@
 --- ( Services ) ---
+local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 
 --- ( Physical Object References ) ---
 local lobbyFolder = workspace:FindFirstChild("Lobby")
+local level1Folder = workspace:FindFirstChild("Level 1")
 
 --- ( Private Variables ) ---
 local animationInfo = TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
@@ -33,6 +35,21 @@ function openLobbyElevator()
 	rightSideAnimation2:Play()
 end
 
+function openLevel1Entrance()
+	local instance = level1Folder.PreviousLevelEntrance.Door
+
+	local leftSideAnimation = TweenService:Create(instance.Left, animationInfo, {
+		Position = Vector3.new(-75.025, 8.25, -393.5),
+	})
+	local rightSideAnimation = TweenService:Create(instance.Right, animationInfo, {
+		Position = Vector3.new(-75.025, 8.25, -370.5),
+	})
+
+	leftSideAnimation:Play()
+	rightSideAnimation:Play()
+end
+
 return {
 	openLobbyElevator = openLobbyElevator,
+	openLevel1Entrance = openLevel1Entrance,
 }
