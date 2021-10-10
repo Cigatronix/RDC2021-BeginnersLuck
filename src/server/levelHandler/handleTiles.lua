@@ -41,8 +41,8 @@ local function checkProgress(levelNumber)
 		end
 	end
 
-	print(totalTilesTouched, requiredTiles, not (totalTilesTouched >= requiredTiles))
-	return not (totalTilesTouched >= requiredTiles)
+	print(totalTilesTouched + 1, requiredTiles)
+	return not (totalTilesTouched + 1 >= requiredTiles)
 end
 
 local function validateAnswer(levelNumber)
@@ -168,9 +168,15 @@ function handleTile(position, levelNumber, tileIndex)
 	end
 
 	-- Handle connections to the tile
+	local resetTime = 0
 	tileToHandle.PrimaryPart.Touched:Connect(function(hit)
 		local humanoid = hit.Parent:FindFirstChild("Humanoid")
 		if not humanoid then
+			return
+		end
+
+		local now = time()
+		if now - resetTime < 1 then
 			return
 		end
 
@@ -183,11 +189,13 @@ function handleTile(position, levelNumber, tileIndex)
 			if not isAnswerValid then
 				humanoidRootPart.CFrame = CFrame.new(playerStart.Position)
 				resetGrid(levelNumber)
-			else
-				warn(string.format("Player has cleared Level %s", tostring(levelNumber)))
-			end
 
-			return
+				resetTime = time()
+
+				return
+			else
+				return warn(string.format("Player has cleared Level %s", tostring(levelNumber)))
+			end
 		end
 
 		gridData.isSelected = true
