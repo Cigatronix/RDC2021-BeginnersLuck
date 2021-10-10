@@ -56,7 +56,7 @@ colorUIToggle.ToggleColor = function(ColorName)
 end
 
 LocalPlayer:GetAttributeChangedSignal("SELECTED_COLOR"):Connect(function()
-    ColorRemote:FireServer()
+    ColorRemote:FireServer(LocalPlayer:GetAttribute("SELECTED_COLOR"))
 end)
 
 return colorUIToggle

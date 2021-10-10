@@ -432,10 +432,6 @@ function lightSpecificTileColor(specifiedColor)
 			continue
 		end
 
-		if not gridData.isSelected then
-			continue
-		end
-
 		for colorName, tilePositionNumbers in pairs(levelGridInformation.Colors) do
 			for _, positionNumber in pairs(tilePositionNumbers) do
 				if colorName ~= specifiedColor then
@@ -446,11 +442,10 @@ function lightSpecificTileColor(specifiedColor)
 					continue
 				end
 
-				local temporaryTile = tiles:FindFirstChlid(specifiedColor)
+				local temporaryTile = tiles:FindFirstChild(specifiedColor):Clone()
 				temporaryTile.Parent = tileHolder
-				temporaryTile:SetPrimaryPartCFrame(gridState.tileObject.PrimaryPart.CFrame)
-
-				gridState.tileObject.Parent = nil
+				temporaryTile:PivotTo(gridData.tileObject.PrimaryPart.CFrame)
+				gridData.tileObject.Parent = nil
 			end
 		end
 	end

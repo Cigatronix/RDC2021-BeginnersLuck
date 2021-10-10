@@ -40,8 +40,14 @@ startLevel4Remote.OnServerEvent:Connect(function()
 	generateLevelGrid(4)
 end)
 
+local LastSelectedColor = ""
+
 LightRemote.OnServerEvent:Connect(function(_, color)
+	if color == "" or (LastSelectedColor ~= "" and color ~= LastSelectedColor) then
+		resetGrid(false)
+	end
 	LightSpecificTileColor(color)
+	LastSelectedColor = color
 end)
 
 resetLevelRemote.OnServerEvent:Connect(function()

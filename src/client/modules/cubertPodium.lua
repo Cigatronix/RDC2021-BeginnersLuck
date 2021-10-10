@@ -2,6 +2,9 @@ local CollectionService = game:GetService("CollectionService")
 local WorkspaceService = game:GetService("Workspace")
 local Cubert = WorkspaceService:WaitForChild("Cubert")
 local TweenService = game:GetService("TweenService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Remotes = ReplicatedStorage:WaitForChild("Remotes")
+local LightSpecificTileColor = Remotes:WaitForChild("LightSpecificTileColor")
 
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
@@ -76,6 +79,7 @@ local function ToggleCubertWeld(Prompt, PromptParent)
         UnweldCubert()
         Prompt.ActionText = "Add cubert"
         colorUIToggle.Disable()
+        LightSpecificTileColor:FireServer("")
     else
         WeldCubert(PromptParent)
         Prompt.ActionText = "Remove cubert"
