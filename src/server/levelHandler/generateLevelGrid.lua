@@ -60,6 +60,7 @@ local function generateLevelGrid(levelNumber)
 				Z = lastTile.position.Z + (4 * constrainedSize - 4),
 			}
 
+			totalTilesSpawned += 1
 			initialTile = handleTile(newColumnInitialTilePosition, levelNumber, totalTilesSpawned)
 		end
 
@@ -76,6 +77,7 @@ local function generateLevelGrid(levelNumber)
 			lastTile = newTile
 		end
 
+		totalTilesSpawned += 1
 		local endingTile = spawnTile(lastTile, levelNumber, totalTilesSpawned)
 		lastTile = endingTile
 	end

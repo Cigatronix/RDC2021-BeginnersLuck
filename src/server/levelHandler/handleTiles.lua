@@ -54,20 +54,11 @@ local function validateAnswer(levelNumber)
 
 		local matches = false
 		for colorName, tilePositionNumbers in pairs(levelGridInformation.Colors) do
-			for _, positionNumber in pairs(tilePositionNumbers) do
-				if positionNumber ~= gridData.tileIndex then
-					continue
-				end
-
-				matches = true
-			end
+			print(tilePositionNumbers[gridData.tileIndex])
+			matches = tilePositionNumbers[gridData.tileIndex]
 		end
 
-		if not matches then
-			return false
-		end
-
-		return true
+		return matches
 	end
 end
 
@@ -89,6 +80,22 @@ local function resetGrid(levelNumber)
 		gridData.isSelected = false
 		gridData.initialTileObject.Parent = tileHolder
 	end
+end
+
+local function isCorrectTile(gridData)
+	local levelGridInformation = LevelConfig[tostring(gridData.level)]
+
+	for colorName, tilePositionNumbers in pairs(levelGridInformation.Colors) do
+		for _, positionNumber in pairs(tilePositionNumbers) do
+			if gridData.tileIndex ~= positionNumber then
+				continue
+			end
+
+			return true
+		end
+	end
+
+	return false
 end
 
 --- ( Public Functions ) ---
@@ -180,6 +187,9 @@ function handleTile(position, levelNumber, tileIndex)
 		end
 
 		local humanoidRootPart = humanoid.RootPart
+
+		local isItCorrect = isCorrectTile(gridData)
+		print(isItCorrect)
 
 		local canSelectTile = checkProgress(levelNumber)
 		if not canSelectTile then
