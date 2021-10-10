@@ -1,5 +1,6 @@
 --- ( Services ) ---
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 
 --- ( Loaded Modules ) ---
@@ -10,6 +11,7 @@ local getOrSetGlobalLevel = require(ReplicatedStorage:WaitForChild("Shared").uti
 
 --- ( Service References ) ---
 local tiles = ReplicatedStorage:WaitForChild("Tiles")
+local remotes = ReplicatedStorage:WaitForChild("Remotes")
 
 --- ( Private Variables ) ---
 local gridState = {}
@@ -213,6 +215,9 @@ local function lightUpCorrectTiles()
 			gridData.tileObject:Destroy()
 			gridData.tileObject = finalTile
 		end
+
+		local playerObject = Players:FindFirstChildOfClass("Player")
+		remotes.Level1Complete:FireClient(playerObject)
 	elseif levelNumber == 2 then
 		canStepLevel2 = false
 
