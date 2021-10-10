@@ -41,7 +41,6 @@ local function checkProgress(levelNumber)
 		end
 	end
 
-	print(totalTilesTouched + 1, requiredTiles)
 	return not (totalTilesTouched + 1 >= requiredTiles)
 end
 
