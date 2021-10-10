@@ -153,20 +153,15 @@ Dialogue.Speak =
 		for _, Text in ipairs(DialogueQueue) do
 			TimeTotal += Text["Duration"]
 		end
-		if #DialogueQueue == 0 then
-			warn("Dialogue queue is 0 for " .. String)
-			Duration += time()
-			table.insert(
-				DialogueQueue,
-				{ ["String"] = String, ["Emote"] = Emote, ["Duration"] = Duration, ["RemoteTag"] = RemoteTag }
-			) --TODO: Delet this
-			Speak(DialogueQueue[1]["String"], DialogueQueue[1]["Emote"])
-		else
-			table.insert(
-				DialogueQueue,
-				{ ["String"] = String, ["Emote"] = Emote, ["Duration"] = Duration, ["RemoteTag"] = RemoteTag }
-			)
-		end
+
+		table.insert(
+			DialogueQueue,
+			{ ["String"] = String, ["Emote"] = Emote, ["Duration"] = Duration, ["RemoteTag"] = RemoteTag }
+		)
+
+		Duration += time()
+		Speak(DialogueQueue[1]["String"], DialogueQueue[1]["Emote"])
+
 		local SpeakerText = DialogueMain:FindFirstChild("Speaker")
 		SpeakerText.Text = "Cubert"
 	end
