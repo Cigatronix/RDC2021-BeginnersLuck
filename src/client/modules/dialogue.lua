@@ -167,8 +167,8 @@ Dialogue.Speak =
 				{ ["String"] = String, ["Emote"] = Emote, ["Duration"] = Duration, ["RemoteTag"] = RemoteTag }
 			)
 		end
-        local SpeakerText = DialogueMain:FindFirstChild("Speaker")
-        SpeakerText.Text = "Cubert"
+		local SpeakerText = DialogueMain:FindFirstChild("Speaker")
+		SpeakerText.Text = "Cubert"
 	end
 
 Dialogue.SpeakOther = function(String, EmoteEnum)

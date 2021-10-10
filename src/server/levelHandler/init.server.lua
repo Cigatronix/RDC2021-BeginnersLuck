@@ -20,10 +20,7 @@ getOrSetGlobalLevel.setGlobalLevel(1)
 
 --- ( Connections ) ---
 startLevel1Remote.OnServerEvent:Connect(function()
-	--getOrSetGlobalLevel.setGlobalLevel(1)
-	--generateLevelGrid(1)
-	getOrSetGlobalLevel.setGlobalLevel(4)
-	generateLevelGrid(4)
+	generateLevelGrid(1)
 end)
 
 startLevel2Remote.OnServerEvent:Connect(function()
