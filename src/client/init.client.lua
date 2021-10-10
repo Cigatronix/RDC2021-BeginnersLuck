@@ -1,6 +1,7 @@
 local Dialogue = require(script.modules.dialogue)
 local Defaults = require(script.modules.defaults)
 local ColorControls = require(script.modules.colorcontrols)
+local CubertPodium = require(script.modules.cubertPodium)
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local LevelDialogue = require(ReplicatedStorage.Shared.strings.levelDialogue)
