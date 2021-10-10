@@ -23,6 +23,16 @@ local CubertWeld
 
 local CubertPodium = {}
 
+local function toggleProximityPrompts(toggle)
+	for _, object in pairs(workspace:GetDescendants()) do
+		if not object:IsA("ProximityPrompt") then
+			continue
+		end
+
+		object.Enabled = toggle
+	end
+end
+
 local function UnweldCubert()
 	if CubertWeld then
 		CubertWeld:Destroy()
@@ -84,6 +94,10 @@ local function WeldCubert(PromptParent)
 		{ CFrame = CFrame.new(Base:GetPivot().Position + Vector3.new(0, 25, 0), Base:GetPivot().Position) }
 	)
 	TweenToCubert:Play()
+
+	ExitCubert.Visible = true
+	toggleProximityPrompts(false)
+
 	--TODO: Check if the thing is going to be facing forward, also how should we handle rotation?
 end
 
@@ -133,12 +147,14 @@ UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
 	then
 		ToggleCubertWeld(LastPrompt, nil)
 		ResetGridFromBirdsEyeView:FireServer()
+		toggleProximityPrompts(true)
 	end
 end)
 
 ExitCubert.TextButton.MouseButton1Click:Connect(function()
 	ToggleCubertWeld(LastPrompt, nil)
 	ResetGridFromBirdsEyeView:FireServer()
+	toggleProximityPrompts(true)
 end)
 
 return CubertPodium
