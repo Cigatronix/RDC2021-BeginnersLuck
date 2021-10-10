@@ -2,7 +2,9 @@ local CollectionService = game:GetService("CollectionService")
 local WorkspaceService = game:GetService("Workspace")
 local Cubert = WorkspaceService:WaitForChild("Cubert")
 
-local CubertWeld = {}
+local CubertWeld
+
+local CubertPodium = {}
 
 local function UnweldCubert()
     if CubertWeld then
@@ -38,4 +40,4 @@ for _, Prompt in ipairs(CollectionService:GetTagged("CUBERT_PROMPT")) do
     end)
 end
 
-return CubertWeld
+return CubertPodium
