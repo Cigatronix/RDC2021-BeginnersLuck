@@ -13,25 +13,28 @@ local Controls = LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("HUD"):WaitF
 local Cubug = {}
 
 local function ToggleCubugRemote()
-    ToggleCubug:FireServer()
-    if LocalPlayer:GetAttribute("SELECTED_COLOR") ~= "" then
-        LightSpecificTileColor:FireServer(LocalPlayer:GetAttribute("SELECTED_COLOR"))
-    end
+	ToggleCubug:FireServer()
+	if LocalPlayer:GetAttribute("SELECTED_COLOR") ~= "" then
+		LightSpecificTileColor:FireServer(LocalPlayer:GetAttribute("SELECTED_COLOR"))
+	end
 end
 
 Cubug.Initialize = function()
-    Controls.Cubug.Visible = true
-    UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
-        if gameProcessedEvent then return end
-        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Q then
-            ToggleCubugRemote()
-        end
-    end)
+	Controls.Cubug.Visible = true
+	UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
+		if gameProcessedEvent then
+			return
+		end
+		if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Q then
+			ToggleCubugRemote()
+			Controls.Cubug.Visible = true
+		end
+	end)
 
-    Controls.Cubug.TextButton.MouseButton1Click:Connect(function()
-        ToggleCubugRemote()
-    end)
+	Controls.Cubug.TextButton.MouseButton1Click:Connect(function()
+		ToggleCubugRemote()
+		Controls.Cubug.Visible = true
+	end)
 end
-
 
 return Cubug

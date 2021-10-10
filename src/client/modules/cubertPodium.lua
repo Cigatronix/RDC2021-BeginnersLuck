@@ -159,6 +159,7 @@ ExitCubert.TextButton.MouseButton1Click:Connect(function()
 	ResetGridFromBirdsEyeView:FireServer()
 	toggleProximityPrompts(true)
 	ExitCubert.Visible = false
+	Controls.Cubug.Visible = false
 end)
 
 return CubertPodium
