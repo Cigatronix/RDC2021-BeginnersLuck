@@ -32,13 +32,17 @@ local function UnweldCubert()
 end
 
 local function WeldCubert(PromptParent)
+    local Base = PromptParent.Parent.Parent.Parent:FindFirstChild("Base")
+    if not Base then
+        Base = PromptParent
+    end
     if CubertWeld then 
         UnweldCubert() 
     end
-    Cubert:PivotTo(PromptParent:GetPivot() + Vector3.new(0,Cubert.PrimaryPart.Size.Y/2,0))
+    Cubert:PivotTo(Base:GetPivot() + Vector3.new(0,Cubert.PrimaryPart.Size.Y/2,0))
     CubertWeld = Instance.new("WeldConstraint")
     CubertWeld.Part0 = Cubert.PrimaryPart
-    CubertWeld.Part1 = PromptParent
+    CubertWeld.Part1 = Base
     CubertWeld.Parent = Cubert.PrimaryPart
 
     --[[
@@ -61,7 +65,8 @@ local function WeldCubert(PromptParent)
 
     local Camera = WorkspaceService.CurrentCamera
     Camera.CameraType = Enum.CameraType.Scriptable
-    local TweenToCubert = TweenService:Create(Camera, GenericTweenInformation, {CFrame = Cubert:GetPivot()})
+    -- local TweenToCubert = TweenService:Create(Camera, GenericTweenInformation, {CFrame = Cubert:GetPivot()})
+    local TweenToCubert = TweenService:Create(Camera, GenericTweenInformation, {CFrame = CFrame.new(Base:GetPivot().Position + Vector3.new(0, 20, 0), Base:GetPivot().Position)})
     TweenToCubert:Play()
     --TODO: Check if the thing is going to be facing forward, also how should we handle rotation?
 end
