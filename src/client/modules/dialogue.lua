@@ -114,7 +114,6 @@ local function ClearQueue() -- Pops the front of the queue when the object is do
 	if #DialogueQueue == 0 then
 		return
 	end
-	-- warn(DialogueQueue[1]["Duration"] - time())
 	if DialogueQueue[1]["Duration"] - time() <= 0 then
 		if #DialogueQueue == 1 then --Last Item
 			if DialogueQueue[1]["RemoteTag"] ~= nil then
@@ -168,6 +167,8 @@ Dialogue.Speak =
 				{ ["String"] = String, ["Emote"] = Emote, ["Duration"] = Duration, ["RemoteTag"] = RemoteTag }
 			)
 		end
+        local SpeakerText = DialogueMain:FindFirstChild("Speaker")
+        SpeakerText.Text = "Cubert"
 	end
 
 Dialogue.SpeakOther = function(String, EmoteEnum)
