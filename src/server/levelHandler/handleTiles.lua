@@ -7,6 +7,9 @@ local CollectionService = game:GetService("CollectionService")
 --- ( Loaded Modules ) ---
 local LevelConfig = require(ReplicatedStorage:WaitForChild("Shared").levelConfig)
 
+--- ( Utility ) ---
+local getOrSetGlobalLevel = require(ReplicatedStorage:WaitForChild("Shared").utility.getOrSetGlobalLevel)
+
 --- ( Service References ) ---
 local tiles = ReplicatedStorage:WaitForChild("Tiles")
 
@@ -45,7 +48,33 @@ local function tweenTile(tileObject, tweenDown)
 	animation:Play()
 end
 
-local function getRequiredTiles(levelNumber)
+local function resetGrid(changeSelected)
+	local levelNumber = getOrSetGlobalLevel.getGlobalLevel()
+
+	local levelBuild = workspace:FindFirstChild(string.format("Level %s", tostring(levelNumber)))
+	local tileHolder = levelBuild:FindFirstChild("TileHolder")
+
+	for _, tile in pairs(tileHolder:GetChildren()) do
+		if tile.Name ~= "Off" then
+			tile:Destroy()
+		end
+	end
+
+	for _, gridData in pairs(gridState) do
+		if gridData.level ~= levelNumber then
+			continue
+		end
+
+		if changeSelected then
+			gridData.isSelected = false
+		end
+
+		gridData.tileObject.Parent = tileHolder
+	end
+end
+
+local function getRequiredTiles()
+	local levelNumber = getOrSetGlobalLevel.getGlobalLevel()
 	local levelGridInformation = LevelConfig[tostring(levelNumber)]
 
 	local requiredTiles = 0
@@ -58,7 +87,8 @@ local function getRequiredTiles(levelNumber)
 	return requiredTiles
 end
 
-local function checkProgress(levelNumber)
+local function checkProgress()
+	local levelNumber = getOrSetGlobalLevel.getGlobalLevel()
 	local requiredTiles = getRequiredTiles(levelNumber)
 
 	local totalTilesTouched = 0
@@ -76,7 +106,8 @@ local function checkProgress(levelNumber)
 	return not (totalTilesTouched >= requiredTiles)
 end
 
-local function validateAnswer(levelNumber)
+local function validateAnswer()
+	local levelNumber = getOrSetGlobalLevel.getGlobalLevel()
 	local levelGridInformation = LevelConfig[tostring(levelNumber)]
 
 	local requiredTiles = getRequiredTiles(levelNumber)
@@ -104,30 +135,8 @@ local function validateAnswer(levelNumber)
 	return matchingTiles == requiredTiles
 end
 
-local function resetGrid(levelNumber, changeSelected)
-	local levelBuild = workspace:FindFirstChild(string.format("Level %s", tostring(levelNumber)))
-	local tileHolder = levelBuild:FindFirstChild("TileHolder")
-
-	for _, tile in pairs(tileHolder:GetChildren()) do
-		if tile.Name ~= "Off" then
-			tile:Destroy()
-		end
-	end
-
-	for _, gridData in pairs(gridState) do
-		if gridData.level ~= levelNumber then
-			continue
-		end
-
-		if changeSelected then
-			gridData.isSelected = false
-		end
-
-		gridData.tileObject.Parent = tileHolder
-	end
-end
-
-local function lightUpCorrectTiles(levelNumber)
+local function lightUpCorrectTiles()
+	local levelNumber = getOrSetGlobalLevel.getGlobalLevel()
 	local levelBuild = workspace:FindFirstChild(string.format("Level %s", tostring(levelNumber)))
 	resetGrid(levelNumber, false)
 
@@ -208,9 +217,9 @@ function findTile(position)
 end
 
 ---@param position table
----@param levelNumber number
 ---@param tileIndex number
-function handleTile(position, levelNumber, tileIndex)
+function handleTile(position, tileIndex)
+	local levelNumber = getOrSetGlobalLevel.getGlobalLevel()
 	local levelGridInformation = LevelConfig[tostring(levelNumber)]
 
 	local levelBuild = workspace:FindFirstChild(string.format("Level %s", tostring(levelNumber)))

@@ -6,9 +6,12 @@ local LevelConfig = require(ReplicatedStorage:WaitForChild("Shared").levelConfig
 
 --- ( Utility Functions ) ---
 local handleTile = require(script.Parent.handleTiles).handleTile
+local getOrSetGlobalLevel = require(ReplicatedStorage:WaitForChild("Shared").utility.getOrSetGlobalLevel)
 
 --- ( Private Functions ) ---
-local function spawnTile(previousTile, levelNumber, totalTilesSpawned)
+local function spawnTile(previousTile, totalTilesSpawned)
+	local levelNumber = getOrSetGlobalLevel.getGlobalLevel()
+
 	local nextTilePosition = {
 		X = previousTile.position.X,
 		Y = previousTile.position.Y,
@@ -19,9 +22,10 @@ local function spawnTile(previousTile, levelNumber, totalTilesSpawned)
 	return nextTile
 end
 
----@param levelNumber number
 ---Generates the grid for the level number passed.
-local function generateLevelGrid(levelNumber)
+local function generateLevelGrid()
+	local levelNumber = getOrSetGlobalLevel.getGlobalLevel()
+
 	-- Verify that there is valid information for the requested level.
 	local levelGridInformation = LevelConfig[tostring(levelNumber)]
 	assert(levelGridInformation, string.format("Expected to find grid information for level %s", tostring(levelNumber)))
