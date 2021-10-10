@@ -132,6 +132,8 @@ CubertPodium.LoadPrompts = function()
 
 		prompt.Triggered:Connect(function()
 			ToggleCubertWeld(prompt, prompt.Parent)
+			toggleProximityPrompts(false)
+			ExitCubert.Visible = true
 		end)
 	end
 end
@@ -148,6 +150,7 @@ UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
 		ToggleCubertWeld(LastPrompt, nil)
 		ResetGridFromBirdsEyeView:FireServer()
 		toggleProximityPrompts(true)
+		ExitCubert.Visible = false
 	end
 end)
 
@@ -155,6 +158,7 @@ ExitCubert.TextButton.MouseButton1Click:Connect(function()
 	ToggleCubertWeld(LastPrompt, nil)
 	ResetGridFromBirdsEyeView:FireServer()
 	toggleProximityPrompts(true)
+	ExitCubert.Visible = false
 end)
 
 return CubertPodium

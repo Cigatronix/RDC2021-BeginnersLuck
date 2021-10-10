@@ -134,7 +134,6 @@ while true do
 		break
 	end
 
-	print(uiBlur.Size)
 	if uiBlur.Size ~= 24 then
 		tweenUIBlur(true)
 	end
