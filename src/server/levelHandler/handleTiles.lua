@@ -390,7 +390,6 @@ end
 
 --- ( Public Functions ) ---
 function lightSpecificTileColor(specifiedColor)
-	print("displaying " .. specifiedColor)
 	local levelNumber = getOrSetGlobalLevel.getGlobalLevel()
 	local levelGridInformation = LevelConfig[tostring(levelNumber)]
 
