@@ -93,7 +93,7 @@ local function TweenOutMain()
 	end
 end
 
-local function Speak(String, Emote) --Private speaking function. Also calls appropriate functions for tweening the text and face.
+local function Speak(String, Emote, Callback) --Private speaking function. Also calls appropriate functions for tweening the text and face.
 	if not Emotes[Emote] then
 		Emote = "NEUTRAL"
 	end
@@ -108,6 +108,10 @@ local function Speak(String, Emote) --Private speaking function. Also calls appr
 	end
 	TweenText(String)
 	TweenFace(Emote)
+
+	if Callback then
+		Callback()
+	end
 end
 
 local function ClearQueue() -- Pops the front of the queue when the object is done displaying.
@@ -148,19 +152,26 @@ local function ClearQueue() -- Pops the front of the queue when the object is do
 end
 
 Dialogue.Speak =
-	function(String, Emote, Duration, RemoteTag) --Public facing speak function. This adds the object to the queue, and if empty, plays it.
+	function(String, Emote, Duration, RemoteTag, Callback) --Public facing speak function. This adds the object to the queue, and if empty, plays it.
 		local TimeTotal = 0
 		for _, Text in ipairs(DialogueQueue) do
 			TimeTotal += Text["Duration"]
 		end
 
-		table.insert(
-			DialogueQueue,
-			{ ["String"] = String, ["Emote"] = Emote, ["Duration"] = Duration, ["RemoteTag"] = RemoteTag }
-		)
+		table.insert(DialogueQueue, {
+			["String"] = String,
+			["Emote"] = Emote,
+			["Duration"] = Duration,
+			["RemoteTag"] = RemoteTag,
+			["Callback"] = Callback,
+		})
 
 		Duration += time()
-		Speak(DialogueQueue[1]["String"], DialogueQueue[1]["Emote"])
+		if DialogueQueue[1]["Callback"] then
+			Speak(DialogueQueue[1]["String"], DialogueQueue[1]["Emote"], DialogueQueue[1]["Callback"])
+		else
+			Speak(DialogueQueue[1]["String"], DialogueQueue[1]["Emote"])
+		end
 
 		local SpeakerText = DialogueMain:FindFirstChild("Speaker")
 		SpeakerText.Text = "Cubert"
