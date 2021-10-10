@@ -115,4 +115,8 @@ UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
     end
 end)
 
+ExitCubert.TextButton.MouseButton1Click:Connect(function()
+    ToggleCubertWeld(LastPrompt, nil)
+end)
+
 return CubertPodium
