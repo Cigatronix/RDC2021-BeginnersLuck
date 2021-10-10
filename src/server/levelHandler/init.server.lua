@@ -21,21 +21,46 @@ local LightRemote = remotesFolder.LightSpecificTileColor
 getOrSetGlobalLevel.setGlobalLevel(1)
 
 --- ( Connections ) ---
+local spawnLevel1 = false
+local spawnLevel2 = false
+local spawnLevel3 = false
+local spawnLevel4 = false
+
 startLevel1Remote.OnServerEvent:Connect(function()
+	if spawnLevel1 then
+		return
+	end
+	spawnLevel1 = true
+
 	generateLevelGrid(1)
 end)
 
 startLevel2Remote.OnServerEvent:Connect(function()
+	if spawnLevel2 then
+		return
+	end
+	spawnLevel2 = true
+
 	getOrSetGlobalLevel.setGlobalLevel(2)
 	generateLevelGrid(2)
 end)
 
 startLevel3Remote.OnServerEvent:Connect(function()
+	if spawnLevel3 then
+		return
+	end
+	spawnLevel3 = true
+
 	getOrSetGlobalLevel.setGlobalLevel(3)
 	generateLevelGrid(3)
 end)
 
 startLevel4Remote.OnServerEvent:Connect(function()
+	if spawnLevel4 then
+		return
+	end
+	spawnLevel4 = true
+
 	getOrSetGlobalLevel.setGlobalLevel(4)
 	generateLevelGrid(4)
 end)

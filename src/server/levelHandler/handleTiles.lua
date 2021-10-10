@@ -264,6 +264,9 @@ local function lightUpCorrectTiles()
 			gridData.tileObject:Destroy()
 			gridData.tileObject = finalTile
 		end
+
+		local playerObject = Players:FindFirstChildOfClass("Player")
+		remotes.Level2Complete:FireClient(playerObject)
 	elseif levelNumber == 3 then
 		canStepLevel3 = false
 
@@ -364,6 +367,9 @@ local function lightUpCorrectTiles()
 			gridData.tileObject:Destroy()
 			gridData.tileObject = finalTile
 		end
+
+		local playerObject = Players:FindFirstChildOfClass("Player")
+		remotes.Level3Complete:FireClient(playerObject)
 	elseif levelNumber == 4 then
 		canStepLevel4 = false
 
@@ -421,6 +427,9 @@ local function lightUpCorrectTiles()
 			gridData.tileObject:Destroy()
 			gridData.tileObject = finalTile
 		end
+
+		local playerObject = Players:FindFirstChildOfClass("Player")
+		remotes.Level4Complete:FireClient(playerObject)
 	end
 end
 
