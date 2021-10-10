@@ -33,7 +33,7 @@ local function WeldCubert(PromptParent)
     if CubertWeld then 
         UnweldCubert() 
     end
-    Cubert:PivotTo(PromptParent:GetPivot() + Vector3.new(0,Cubert.PrimaryPart.Y/2,0))
+    Cubert:PivotTo(PromptParent:GetPivot() + Vector3.new(0,Cubert.PrimaryPart.Size.Y/2,0))
     CubertWeld = Instance.new("WeldConstraint")
     CubertWeld.Part0 = Cubert.PrimaryPart
     CubertWeld.Part1 = PromptParent
