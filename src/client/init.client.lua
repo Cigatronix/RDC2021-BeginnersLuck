@@ -6,7 +6,7 @@ local Defaults = require(script.modules.defaults)
 local ColorControls = require(script.modules.colorcontrols)
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local LevelDialogue = require(ReplicatedStorage.Shared.strings.LevelDialogue)
+local LevelDialogue = require(ReplicatedStorage.Shared.strings.levelDialogue)
 
 -- wait(5)
 
