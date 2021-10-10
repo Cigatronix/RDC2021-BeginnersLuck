@@ -268,6 +268,7 @@ local function lightUpCorrectTiles()
 		local playerObject = Players:FindFirstChildOfClass("Player")
 		remotes.Level2Complete:FireClient(playerObject)
 	elseif levelNumber == 3 then
+		warn("Completed level 3")
 		canStepLevel3 = false
 
 		elevatorDoor.Indicator.Color = Color3.fromRGB(85, 255, 127)
@@ -316,50 +317,6 @@ local function lightUpCorrectTiles()
 				end
 			end
 
-			finalTile.Parent = gridData.tileObject.Parent
-			finalTile:SetPrimaryPartCFrame(gridData.tileObject.PrimaryPart.CFrame)
-			tweenTile(finalTile, true)
-
-			gridData.tileObject:Destroy()
-			gridData.tileObject = finalTile
-		end
-
-		elevatorDoor.Indicator.Color = Color3.fromRGB(85, 255, 127)
-
-		for _, object in pairs(cubertStation:GetDescendants()) do
-			if object:IsA("BasePart") then
-				if object.Color == Color3.fromRGB(255, 89, 89) then
-					object.Color = Color3.fromRGB(85, 255, 127)
-				end
-			end
-		end
-
-		for _, object in pairs(podiumWire:GetDescendants()) do
-			if object:IsA("BasePart") then
-				if object.Color == Color3.fromRGB(255, 89, 89) then
-					object.Color = Color3.fromRGB(85, 255, 127)
-				end
-			end
-		end
-
-		for _, object in pairs(elevatorWire:GetDescendants()) do
-			if object:IsA("BasePart") then
-				if object.Color == Color3.fromRGB(255, 89, 89) then
-					object.Color = Color3.fromRGB(85, 255, 127)
-				end
-			end
-		end
-
-		for _, gridData in pairs(gridState) do
-			if gridData.level ~= levelNumber then
-				continue
-			end
-
-			if not gridData.isSelected then
-				continue
-			end
-
-			local finalTile = tiles.Green:Clone()
 			finalTile.Parent = gridData.tileObject.Parent
 			finalTile:SetPrimaryPartCFrame(gridData.tileObject.PrimaryPart.CFrame)
 			tweenTile(finalTile, true)
