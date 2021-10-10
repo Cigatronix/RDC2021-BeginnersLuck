@@ -6,22 +6,22 @@
 
 local LevelDialogue = {
 	{
-		{ "Hey there!", "JOY", 5, nil, "OpenLobbyElevator" },
-		{ "Looks like you're new around here, huh?", "SARCASTIC", 5 },
+		{ "Hey there!", "JOY", 1, nil, "OpenLobbyElevator" },
+		{ "Looks like you're new around here, huh?", "SARCASTIC", 1 },
 		{
 			"But let's get started anyways! Step into the elevator to begin.",
 			"",
-			5,
+			1,
 			nil,
 			"ListenForLobbyConnections",
 		},
 	},
 	{
-		{ "Welcome to the Tile Trials! I hope you're ready to solve some puzzles.", "", 5 },
+		{ "Welcome to the Tile Trials! I hope you're ready to solve some puzzles.", "", 1 },
 		{
 			"Because if you're not...you're gonna have a bad time.",
 			"SARCASTIC",
-			5,
+			1,
 			nil,
 			"OpenLevel1Entrance",
 		},
@@ -30,15 +30,15 @@ local LevelDialogue = {
 		{
 			"Here's the deal - step on these buttons in the right pattern, and you get to move on! Simple as that.",
 			"NEUTRAL",
-			5,
+			1,
 			true,
 		},
 	},
 	{
-		{ "Hopefully this works this time... Try to step on the colored tiles again.", "NEUTRAL", 5, true },
+		{ "Hopefully this works this time... Try to step on the colored tiles again.", "NEUTRAL", 1, true },
 	},
 	{
-		{ "Nice job, you did it! But it won't be this simple next time.", "JOY", 5 },
+		{ "Nice job, you did it! But it won't be this simple next time.", "JOY", 1 },
 	},
 	{
 		{ "For this one, you'll have to put me at the station to check which tiles are correct.", "NEUTRAL", 5, true },
