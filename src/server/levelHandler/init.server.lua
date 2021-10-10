@@ -6,10 +6,20 @@ local generateLevelGrid = require(script.generateLevelGrid).generateLevelGrid
 
 --- ( Remotes ) ---
 local remotesFolder = ReplicatedStorage:WaitForChild("Remotes")
-local startGameRemote = remotesFolder.StartGame
+local startLevel1Remote = remotesFolder.StartLevel1
+local startLevel2Remote = remotesFolder.StartLevel2
+local startLevel3Remote = remotesFolder.StartLevel3
 
-startGameRemote.OnServerEvent:Connect(function()
+startLevel1Remote.OnServerEvent:Connect(function()
 	generateLevelGrid(1)
+end)
+
+startLevel2Remote.OnServerEvent:Connect(function()
+	generateLevelGrid(2)
+end)
+
+startLevel3Remote.OnServerEvent:Connect(function()
+	generateLevelGrid(3)
 end)
 
 generateLevelGrid(1)

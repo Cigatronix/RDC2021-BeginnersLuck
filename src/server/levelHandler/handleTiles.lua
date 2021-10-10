@@ -1,6 +1,7 @@
 --- ( Services ) ---
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TweenService = game:GetService("TweenService")
 local CollectionService = game:GetService("CollectionService")
 
 --- ( Loaded Modules ) ---
@@ -14,6 +15,36 @@ local gridState = {}
 local canStepLevel1 = true
 
 --- ( Private Functions ) ---
+local function tweenTile(tileObject, tweenDown)
+	local animationInfo = TweenInfo.new(0.5, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+
+	local tweenData
+	if tweenDown then
+		local newPosition = Vector3.new(
+			tileObject.PrimaryPart.Position.X,
+			tileObject.PrimaryPart.Position.Y - 0.5,
+			tileObject.PrimaryPart.Position.Z
+		)
+
+		tweenData = {
+			CFrame = CFrame.new(newPosition),
+		}
+	else
+		local newPosition = Vector3.new(
+			tileObject.PrimaryPart.Position.X,
+			tileObject.PrimaryPart.Position.Y + 0.5,
+			tileObject.PrimaryPart.Position.Z
+		)
+
+		tweenData = {
+			CFrame = CFrame.new(newPosition),
+		}
+	end
+
+	local animation = TweenService:Create(tileObject.PrimaryPart, animationInfo, tweenData)
+	animation:Play()
+end
+
 local function getRequiredTiles(levelNumber)
 	local levelGridInformation = LevelConfig[tostring(levelNumber)]
 
@@ -97,10 +128,40 @@ local function resetGrid(levelNumber, changeSelected)
 end
 
 local function lightUpCorrectTiles(levelNumber)
+	local levelBuild = workspace:FindFirstChild(string.format("Level %s", tostring(levelNumber)))
 	resetGrid(levelNumber, false)
 
 	if levelNumber == 1 then
 		canStepLevel1 = false
+
+		local cubertStation = levelBuild:FindFirstChild("Cubert Podium")
+		local podiumWire = levelBuild:FindFirstChild("Podium Wire")
+		local elevatorWire = levelBuild:FindFirstChild("Elevator Wire")
+
+		for _, object in pairs(cubertStation:GetDescendants()) do
+			if object:IsA("BasePart") then
+				if object.Color == Color3.fromRGB(255, 89, 89) then
+					object.Color = Color3.fromRGB(85, 255, 127)
+				end
+			end
+		end
+
+		for _, object in pairs(podiumWire:GetDescendants()) do
+			if object:IsA("BasePart") then
+				if object.Color == Color3.fromRGB(255, 89, 89) then
+					object.Color = Color3.fromRGB(85, 255, 127)
+				end
+			end
+		end
+
+		for _, object in pairs(elevatorWire:GetDescendants()) do
+			if object:IsA("BasePart") then
+				if object.Color == Color3.fromRGB(255, 89, 89) then
+					object.Color = Color3.fromRGB(85, 255, 127)
+				end
+			end
+		end
+
 		for _, gridData in pairs(gridState) do
 			if gridData.level ~= levelNumber then
 				continue
@@ -110,11 +171,10 @@ local function lightUpCorrectTiles(levelNumber)
 				continue
 			end
 
-			print(gridData.tileIndex)
-
 			local finalTile = tiles.Green:Clone()
 			finalTile.Parent = gridData.tileObject.Parent
 			finalTile:SetPrimaryPartCFrame(gridData.tileObject.PrimaryPart.CFrame)
+			tweenTile(finalTile, true)
 
 			gridData.tileObject:Destroy()
 			gridData.tileObject = finalTile
@@ -220,7 +280,10 @@ function handleTile(position, levelNumber, tileIndex)
 
 			if not isAnswerValid then
 				humanoidRootPart.CFrame = CFrame.new(playerStart.Position)
-				resetGrid(levelNumber, true)
+
+				task.delay(0.5, function()
+					resetGrid(levelNumber, true)
+				end)
 
 				resetTime = time()
 
@@ -234,6 +297,7 @@ function handleTile(position, levelNumber, tileIndex)
 		local newTile = tiles.NoColor:Clone()
 		newTile.Parent = tileHolder
 		newTile:SetPrimaryPartCFrame(tileToHandle.PrimaryPart.CFrame)
+		tweenTile(newTile, true)
 
 		tileToHandle.Parent = nil
 	end)
