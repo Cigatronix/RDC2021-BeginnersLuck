@@ -151,14 +151,14 @@ level3Complete.OnClientEvent:Connect(function()
 end)
 
 level4Complete.OnClientEvent:Connect(function()
+	hud.Enabled = false
+	hud.Parent.Idle.Enabled = false
+	hud.Parent.BSOD.Enabled = true
+
 	DialogueHandler.displayDialogue("Cubug", 99, true)
 	DialogueHandler.displayDialogue("Cubert", 991, true)
 	DialogueHandler.displayDialogue("Cubug", 992, true)
 	DialogueHandler.displayDialogue("Cubert", 993, false)
-
-	hud.Enabled = false
-	hud.Parent.Idle.Enabled = false
-	hud.Parent.BSOD.Enabled = true
 end)
 
 enabledCubugRemote.OnClientEvent:Connect(function()
