@@ -22,6 +22,7 @@ local level4Folder = workspace:FindFirstChild("Level 4")
 local level1Complete = remotes.Level1Complete
 local level2Complete = remotes.Level2Complete
 local level3Complete = remotes.Level3Complete
+local level4Complete = remotes.Level4Complete
 
 local startLevel1 = remotes.StartLevel1
 local startLevel2 = remotes.StartLevel2
@@ -29,6 +30,7 @@ local startLevel3 = remotes.StartLevel3
 local startLevel4 = remotes.StartLevel4
 
 local skipLevel1 = remotes.SkipLevel1
+local explosion = remotes.Explosion
 
 local enabledCubugRemote = remotes.EnableCubug
 
@@ -71,6 +73,8 @@ end)
 level1Complete.OnClientEvent:Connect(function()
 	ElevatorControl.openLevel2TeleportElevator()
 
+	DialogueHandler.displayDialogue("Cubert", 69, false)
+
 	instance1.Touched:Connect(function(hit)
 		if not hit.Parent:FindFirstChild("Humanoid") then
 			return
@@ -82,7 +86,9 @@ level1Complete.OnClientEvent:Connect(function()
 		ElevatorControl.openLevel2Entrance()
 		startLevel2:FireServer()
 
-		DialogueHandler.displayDialogue("Cubert", 7, false)
+		DialogueHandler.displayDialogue("Cubert", 7, true)
+		DialogueHandler.displayDialogue("Cubert", 71, true)
+		DialogueHandler.displayDialogue("Cubert", 72, false)
 	end)
 end)
 
@@ -102,13 +108,14 @@ level2Complete.OnClientEvent:Connect(function()
 		ElevatorControl.openLevel3Entrance()
 		startLevel3:FireServer()
 
-		DialogueHandler.displayDialogue("Cubert", 9, true)
-		DialogueHandler.displayDialogue("Cubert", 10, false)
+		DialogueHandler.displayDialogue("Cubert", 8, false)
 	end)
 end)
 
 level3Complete.OnClientEvent:Connect(function()
 	ElevatorControl.openLevel4TeleportElevator()
+
+	DialogueHandler.displayDialogue("Cubert", 91, false)
 
 	instance3.Touched:Connect(function(hit)
 		local humanoid = hit.Parent:FindFirstChild("Humanoid")
@@ -122,8 +129,21 @@ level3Complete.OnClientEvent:Connect(function()
 		ElevatorControl.openLevel4Entrance()
 		startLevel4:FireServer()
 
-		DialogueHandler.displayDialogue("Cubert", 11, false)
+		DialogueHandler.displayDialogue("Cubert", 92, true)
+		DialogueHandler.displayDialogue("Cubug", 93, true)
+		DialogueHandler.displayDialogue("Cubert", 94, true)
+		DialogueHandler.displayDialogue("Cubug", 95, true)
+		DialogueHandler.displayDialogue("Cubert", 96, true)
+		DialogueHandler.displayDialogue("Cubug", 97, true)
+		DialogueHandler.displayDialogue("Cubug", 98, false)
 	end)
+end)
+
+level4Complete.OnClientEvent:Connect(function()
+	DialogueHandler.displayDialogue("Cubug", 99, true)
+	DialogueHandler.displayDialogue("Cubert", 991, true)
+	DialogueHandler.displayDialogue("Cubug", 992, true)
+	DialogueHandler.displayDialogue("Cubert", 993, false)
 end)
 
 enabledCubugRemote.OnClientEvent:Connect(function()
@@ -149,12 +169,7 @@ RunService.Heartbeat:Connect(function()
 		return
 	end
 
-	local forceField = Instance.new("ForceField")
-	forceField.Parent = character
-
-	local explosion = Instance.new("Explosion")
-	explosion.Parent = Lobby_NextLevelElevatorInside
-	explosion.BlastRadius = 30
+	explosion:FireServer()
 
 	hasInteractedWithLobbyDoor = true
 	skipLevel1:FireServer()

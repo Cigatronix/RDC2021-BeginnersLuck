@@ -3,7 +3,11 @@
         "NEUTRAL": "rbxassetid://7693330000",
         "ANGRY": "rbxassetid://7693970942",
         "SARCASTIC": "rbxassetid://7693966885",
-        "JOY": "rbxassetid://7693966628"
+        "JOY": "rbxassetid://7693966628",
+        "SURPRISE": "rbxassetid://7698270498",
+        "HAPPYC": "rbxassetid://7697416557",
+        "SHYC": "rbxassetid://7700231729",
+        "SHYC2": "rbxassetid://7698305451"
     },
     "DIALOGUE": {
         "Cubert": {
@@ -55,14 +59,86 @@
                 "Emotion": "NEUTRAL",
                 "Duration": 3
             },
-            "10": {
-                "Text": "..Don't put me down anywhere else. Please.",
+            "69": {
+                "Text": "Woah! Uh, I guess that works. I guess we'll move on?",
+                "Emotion": "NEUTRAL",
+                "Duration": 3
+            },
+            "71": {
+                "Text": "You'll have to put me at the station to check which tiles are correct.",
+                "Emotion": "NEUTRAL",
+                "Duration": 3
+            },
+            "72": {
+                "Text": "...Don't put me down anywhere else. Please.",
                 "Emotion": "ANGRY",
                 "Duration": 3
             },
-            "11": {
+            "81": {
+                "Text": "Let's try this one.",
+                "Emotion": "SARCASTIC",
+                "Duration": 3
+            },
+            "91": {
                 "Text": "Nice one. Hopefully the next one won't take you too long.",
+                "Emotion": "SARCASTIC",
+                "Duration": 3
+            },
+            "92": {
+                "Text": "Wait, wh- What are you doing here?",
+                "Emotion": "SURPRISE",
+                "Duration": 3
+            },
+            "94": {
+                "Text": "why did I get myself into this--",
                 "Emotion": "ANGRY",
+                "Duration": 3
+            },
+            "96": {
+                "Text": "cubug please",
+                "Emotion": "ANGRY",
+                "Duration": 3
+            },
+            "991": {
+                "Text": "Look what you did, cubug! It's all your fault.",
+                "Emotion": "ANGRY",
+                "Duration": 3
+            },
+            "993": {
+                "Text": "Well, looks like you've finished all of the levels that we can get to. I guess go and try to help cubug fix it...",
+                "Emotion": "SARCASTIC",
+                "Duration": 3
+            }
+        },
+        "Cubug": {
+            "93": {
+                "Text": "hey!! it's me, cubug!",
+                "Emotion": "HAPPYC",
+                "Duration": 3
+            },
+            "95": {
+                "Text": "oh, you're trying to get out? cool I want to help too!!",
+                "Emotion": "HAPPYC",
+                "Duration": 3
+            },
+            "97": {
+                "Text": "sorry I'm a little clumsy sometimes but I'll do my best!",
+                "Emotion": "SHYC",
+                "Duration": 3
+            },
+            "98": {
+                "Text": "uh, you can press Q to use my ability. I'm not really sure what it does but you can try it out I guess",
+                "Emotion": "SHYC",
+                "Duration": 3
+            },
+            "99": {
+                "Text": "oh no what happened- noooo im so sorry",
+                "Emotion": "SHYC2",
+                "Duration": 3
+            },
+            "992": {
+                "Text": "its ok i can try to fix this",
+                "Emotion": "SHYC2",
                 "Duration": 3
             }
         }

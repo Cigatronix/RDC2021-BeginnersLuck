@@ -21,6 +21,7 @@ local ToggleCubug = remotesFolder.ToggleCubug
 local EnableCubug = remotesFolder.EnableCubug
 local SkipLevel1 = remotesFolder.SkipLevel1
 local Level1Complete = remotesFolder.Level1Complete
+local Explosion = remotesFolder.Explosion
 
 getOrSetGlobalLevel.setGlobalLevel(1)
 
@@ -101,6 +102,21 @@ end)
 
 SkipLevel1.OnServerEvent:Connect(function(player)
 	Level1Complete:FireClient(player)
+end)
+
+Explosion.OnServerEvent:Connect(function(player)
+	local character = player.Character
+
+	local level1Folder = workspace:FindFirstChild("Level 1")
+	local Lobby_NextLevelElevatorInside = level1Folder.NextLevelElevatorInside.Floor
+
+	local forceField = Instance.new("ForceField")
+	forceField.Parent = character
+
+	local explosion = Instance.new("Explosion")
+	explosion.Position = Lobby_NextLevelElevatorInside.Position
+	explosion.BlastRadius = 30
+	explosion.BlastPressure = 2
 end)
 
 game.Players.PlayerAdded:Connect(function(Player)
