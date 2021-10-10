@@ -16,6 +16,7 @@ local tiles = ReplicatedStorage:WaitForChild("Tiles")
 --- ( Private Variables ) ---
 local gridState = {}
 local canStepLevel1 = true
+local canStepLevel2 = true
 
 --- ( Private Functions ) ---
 local function tweenTile(tileObject, tweenDown)
@@ -111,7 +112,6 @@ local function validateAnswer()
 	local levelGridInformation = LevelConfig[tostring(levelNumber)]
 
 	local requiredTiles = getRequiredTiles()
-	warn("REQUIRED " .. tostring(requiredTiles))
 	local matchingTiles = 0
 	for _, gridData in pairs(gridState) do
 		if gridData.level ~= levelNumber then
@@ -132,7 +132,6 @@ local function validateAnswer()
 			end
 		end
 	end
-	warn("HAS " .. tostring(matchingTiles))
 
 	return matchingTiles == requiredTiles
 end
@@ -140,15 +139,34 @@ end
 local function lightUpCorrectTiles()
 	local levelNumber = getOrSetGlobalLevel.getGlobalLevel()
 	local levelBuild = workspace:FindFirstChild(string.format("Level %s", tostring(levelNumber)))
-	resetGrid(levelNumber, false)
+	resetGrid(false)
+
+	local cubertStation = levelBuild:FindFirstChild("Cubert Podium")
+	assert(
+		cubertStation,
+		string.format("Expected there to be a model named `Cubert Podium` for level %s", tostring(levelNumber))
+	)
+
+	local podiumWire = levelBuild:FindFirstChild("Podium Wire")
+	assert(
+		cubertStation,
+		string.format("Expected there to be a model named `Podium Wire` for level %s", tostring(levelNumber))
+	)
+
+	local elevatorWire = levelBuild:FindFirstChild("Elevator Wire")
+	assert(
+		cubertStation,
+		string.format("Expected there to be a model named `Elevator Wire` for level %s", tostring(levelNumber))
+	)
+
+	local elevatorDoor = levelBuild:FindFirstChild("NextLevelEntrance")
+	assert(
+		cubertStation,
+		string.format("Expected there to be a model named `NextLevelEntrance` for level %s", tostring(levelNumber))
+	)
 
 	if levelNumber == 1 then
 		canStepLevel1 = false
-
-		local cubertStation = levelBuild:FindFirstChild("Cubert Podium")
-		local podiumWire = levelBuild:FindFirstChild("Podium Wire")
-		local elevatorWire = levelBuild:FindFirstChild("Elevator Wire")
-		local elevatorDoor = levelBuild:FindFirstChild("ElevatorDoorLevel2")
 
 		elevatorDoor.Indicator.Color = Color3.fromRGB(85, 255, 127)
 
@@ -186,6 +204,54 @@ local function lightUpCorrectTiles()
 			end
 
 			local finalTile = tiles.Green:Clone()
+			finalTile.Parent = gridData.tileObject.Parent
+			finalTile:SetPrimaryPartCFrame(gridData.tileObject.PrimaryPart.CFrame)
+			tweenTile(finalTile, true)
+
+			gridData.tileObject:Destroy()
+			gridData.tileObject = finalTile
+		end
+	else
+		canStepLevel2 = false
+
+		elevatorDoor.Indicator.Color = Color3.fromRGB(85, 255, 127)
+
+		for _, object in pairs(cubertStation:GetDescendants()) do
+			if object:IsA("BasePart") then
+				if object.Color == Color3.fromRGB(255, 89, 89) then
+					object.Color = Color3.fromRGB(85, 255, 127)
+				end
+			end
+		end
+
+		for _, object in pairs(podiumWire:GetDescendants()) do
+			if object:IsA("BasePart") then
+				if object.Color == Color3.fromRGB(255, 89, 89) then
+					object.Color = Color3.fromRGB(85, 255, 127)
+				end
+			end
+		end
+
+		for _, object in pairs(elevatorWire:GetDescendants()) do
+			if object:IsA("BasePart") then
+				if object.Color == Color3.fromRGB(255, 89, 89) then
+					object.Color = Color3.fromRGB(85, 255, 127)
+				end
+			end
+		end
+
+		warn(gridState)
+		for _, gridData in pairs(gridState) do
+			if gridData.level ~= levelNumber then
+				continue
+			end
+
+			if not gridData.isSelected then
+				continue
+			end
+
+			local finalTile = tiles.Green:Clone()
+			print("YEET")
 			finalTile.Parent = gridData.tileObject.Parent
 			finalTile:SetPrimaryPartCFrame(gridData.tileObject.PrimaryPart.CFrame)
 			tweenTile(finalTile, true)
@@ -271,6 +337,10 @@ function handleTile(position, tileIndex)
 			if not canStepLevel1 then
 				return
 			end
+		elseif gridData.level == 2 then
+			if not canStepLevel2 then
+				return
+			end
 		end
 
 		local humanoid = hit.Parent:FindFirstChild("Humanoid")
@@ -287,10 +357,10 @@ function handleTile(position, tileIndex)
 
 		gridData.isSelected = true
 
-		local canSelectTile = checkProgress(levelNumber)
+		local canSelectTile = checkProgress()
 		if not canSelectTile then
 			gridData.isSelected = true
-			local isAnswerValid = validateAnswer(levelNumber)
+			local isAnswerValid = validateAnswer()
 
 			if not isAnswerValid then
 				humanoidRootPart.CFrame = CFrame.new(playerStart.Position)
@@ -303,7 +373,7 @@ function handleTile(position, tileIndex)
 
 				return
 			else
-				lightUpCorrectTiles(levelNumber)
+				lightUpCorrectTiles()
 				return warn(string.format("Player has cleared Level %s", tostring(levelNumber)))
 			end
 		end

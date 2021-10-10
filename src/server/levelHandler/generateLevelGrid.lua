@@ -18,7 +18,7 @@ local function spawnTile(previousTile, totalTilesSpawned)
 		Z = previousTile.position.Z - 4,
 	}
 
-	local nextTile = handleTile(nextTilePosition, levelNumber, totalTilesSpawned)
+	local nextTile = handleTile(nextTilePosition, totalTilesSpawned)
 	return nextTile
 end
 
@@ -56,7 +56,7 @@ local function generateLevelGrid()
 	for columnNumber = 1, constrainedSize, 1 do
 		local initialTile
 		if columnNumber == 1 then
-			initialTile = handleTile(initialTilePosition, levelNumber, 1)
+			initialTile = handleTile(initialTilePosition, 1)
 		else
 			local newColumnInitialTilePosition = {
 				X = lastTile.position.X - 4,
@@ -65,7 +65,7 @@ local function generateLevelGrid()
 			}
 
 			totalTilesSpawned += 1
-			initialTile = handleTile(newColumnInitialTilePosition, levelNumber, totalTilesSpawned)
+			initialTile = handleTile(newColumnInitialTilePosition, totalTilesSpawned)
 		end
 
 		assert(
@@ -77,12 +77,12 @@ local function generateLevelGrid()
 		for _ = 2, constrainedSize - 1, 1 do
 			totalTilesSpawned += 1
 
-			local newTile = spawnTile(lastTile, levelNumber, totalTilesSpawned)
+			local newTile = spawnTile(lastTile, totalTilesSpawned)
 			lastTile = newTile
 		end
 
 		totalTilesSpawned += 1
-		local endingTile = spawnTile(lastTile, levelNumber, totalTilesSpawned)
+		local endingTile = spawnTile(lastTile, totalTilesSpawned)
 		lastTile = endingTile
 	end
 end
