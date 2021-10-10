@@ -13,6 +13,9 @@ local ToggleColor = game:GetService("ReplicatedStorage"):FindFirstChild("Remotes
 
 local colorUIToggle = {}
 
+local WorkspaceService = game:GetService("Workspace")
+local Cubert = WorkspaceService:FindFirstChild("Cubert")
+
 -- if LocalPlayer:GetAttribute("SELECTED_COLOR") == nil then
 -- 	ToggleColor:FireServer("")
 -- end
@@ -37,6 +40,7 @@ colorUIToggle.ToggleColor = function(ColorName)
 	-- 	return
 	-- end
 	-- lastChecked = now
+	if Cubert:GetAttribute("IS_WELDED") ~= true then return end
 
 	if LocalPlayer:GetAttribute("SELECTED_COLOR") == ColorName then
 		for _, Button in ipairs(CollectionService:GetTagged("COLOR_BUTTON")) do
