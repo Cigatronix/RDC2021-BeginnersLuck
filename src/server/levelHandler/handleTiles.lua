@@ -11,6 +11,7 @@ local tiles = ReplicatedStorage:WaitForChild("Tiles")
 
 --- ( Private Variables ) ---
 local gridState = {}
+local canStepLevel1 = true
 
 --- ( Private Functions ) ---
 local function getRequiredTiles(levelNumber)
@@ -41,28 +42,38 @@ local function checkProgress(levelNumber)
 		end
 	end
 
-	return not (totalTilesTouched + 1 >= requiredTiles)
+	return not (totalTilesTouched >= requiredTiles)
 end
 
 local function validateAnswer(levelNumber)
 	local levelGridInformation = LevelConfig[tostring(levelNumber)]
 
+	local requiredTiles = getRequiredTiles(levelNumber)
+	local matchingTiles = 0
 	for _, gridData in pairs(gridState) do
 		if gridData.level ~= levelNumber then
 			continue
 		end
 
-		local matches = false
-		for colorName, tilePositionNumbers in pairs(levelGridInformation.Colors) do
-			print(tilePositionNumbers[gridData.tileIndex])
-			matches = tilePositionNumbers[gridData.tileIndex]
+		if not gridData.isSelected then
+			continue
 		end
 
-		return matches
+		for colorName, tilePositionNumbers in pairs(levelGridInformation.Colors) do
+			for _, positionNumber in pairs(tilePositionNumbers) do
+				if gridData.tileIndex ~= positionNumber then
+					continue
+				end
+
+				matchingTiles += 1
+			end
+		end
 	end
+
+	return matchingTiles == requiredTiles
 end
 
-local function resetGrid(levelNumber)
+local function resetGrid(levelNumber, changeSelected)
 	local levelBuild = workspace:FindFirstChild(string.format("Level %s", tostring(levelNumber)))
 	local tileHolder = levelBuild:FindFirstChild("TileHolder")
 
@@ -77,25 +88,38 @@ local function resetGrid(levelNumber)
 			continue
 		end
 
-		gridData.isSelected = false
-		gridData.initialTileObject.Parent = tileHolder
+		if changeSelected then
+			gridData.isSelected = false
+		end
+
+		gridData.tileObject.Parent = tileHolder
 	end
 end
 
-local function isCorrectTile(gridData)
-	local levelGridInformation = LevelConfig[tostring(gridData.level)]
+local function lightUpCorrectTiles(levelNumber)
+	resetGrid(levelNumber, false)
 
-	for colorName, tilePositionNumbers in pairs(levelGridInformation.Colors) do
-		for _, positionNumber in pairs(tilePositionNumbers) do
-			if gridData.tileIndex ~= positionNumber then
+	if levelNumber == 1 then
+		canStepLevel1 = false
+		for _, gridData in pairs(gridState) do
+			if gridData.level ~= levelNumber then
 				continue
 			end
 
-			return true
+			if not gridData.isSelected then
+				continue
+			end
+
+			print(gridData.tileIndex)
+
+			local finalTile = tiles.Green:Clone()
+			finalTile.Parent = gridData.tileObject.Parent
+			finalTile:SetPrimaryPartCFrame(gridData.tileObject.PrimaryPart.CFrame)
+
+			gridData.tileObject:Destroy()
+			gridData.tileObject = finalTile
 		end
 	end
-
-	return false
 end
 
 --- ( Public Functions ) ---
@@ -145,7 +169,7 @@ function handleTile(position, levelNumber, tileIndex)
 	local gridData = {
 		level = levelNumber,
 		tileIndex = tileIndex,
-		initialTileObject = tileToHandle,
+		tileObject = tileToHandle,
 		isSelected = false,
 		position = {
 			X = tileToHandle.PrimaryPart.Position.X,
@@ -157,25 +181,24 @@ function handleTile(position, levelNumber, tileIndex)
 
 	-- Assign tags via CollectionService based on the position of the tile and what level it's being spawned to.
 	for colorName, tilePositionNumbers in pairs(levelGridInformation.Colors) do
-		local matches = false
 		for _, positionNumber in pairs(tilePositionNumbers) do
 			if positionNumber ~= tileIndex then
 				continue
 			end
 
-			matches = true
+			CollectionService:AddTag(tileToHandle, string.format("Level %s - %s", tostring(levelNumber), colorName))
 		end
-
-		if not matches then
-			CollectionService:AddTag(tileToHandle, "NoColor")
-		end
-
-		CollectionService:AddTag(tileToHandle, colorName)
 	end
 
 	-- Handle connections to the tile
 	local resetTime = 0
 	tileToHandle.PrimaryPart.Touched:Connect(function(hit)
+		if gridData.level == 1 then
+			if not canStepLevel1 then
+				return
+			end
+		end
+
 		local humanoid = hit.Parent:FindFirstChild("Humanoid")
 		if not humanoid then
 			return
@@ -188,26 +211,25 @@ function handleTile(position, levelNumber, tileIndex)
 
 		local humanoidRootPart = humanoid.RootPart
 
-		local isItCorrect = isCorrectTile(gridData)
-		print(isItCorrect)
+		gridData.isSelected = true
 
 		local canSelectTile = checkProgress(levelNumber)
 		if not canSelectTile then
+			gridData.isSelected = true
 			local isAnswerValid = validateAnswer(levelNumber)
 
 			if not isAnswerValid then
 				humanoidRootPart.CFrame = CFrame.new(playerStart.Position)
-				resetGrid(levelNumber)
+				resetGrid(levelNumber, true)
 
 				resetTime = time()
 
 				return
 			else
+				lightUpCorrectTiles(levelNumber)
 				return warn(string.format("Player has cleared Level %s", tostring(levelNumber)))
 			end
 		end
-
-		gridData.isSelected = true
 
 		local newTile = tiles.NoColor:Clone()
 		newTile.Parent = tileHolder
