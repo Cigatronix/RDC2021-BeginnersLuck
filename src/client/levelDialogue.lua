@@ -4,11 +4,17 @@
     Strings mainly. For the companion cube to say.
 ]]
 
+local ElevatorControl = require(script.Parent.modules.elevatorControl)
+
 local LevelDialogue = {
 	{
-		{ "Hey there!", "JOY", 5 },
+		{ "Hey there!", "JOY", 5, ElevatorControl.openLobbyElevator() },
 		{ "Looks like you're new around here, huh?", "SARCASTIC", 5 },
-		{ "But let's get started anyways! Step into the elevator to begin.", "", 5 },
+		{
+			"But let's get started anyways! Step into the elevator to begin.",
+			"",
+			5,
+		},
 	},
 	{
 		{ "Welcome to the Tile Trials! I hope you're ready to solve some puzzles.", "", 5 },
