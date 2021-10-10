@@ -1,6 +1,8 @@
 --[[
 Dialogue.Lua
 
+Handles the implementation of cubey's dialogue in-game. Does not handle their speech when interacted with.
+
 UI Layout:
     HUD (sGUI)
         -> Dialogue (Frame)
