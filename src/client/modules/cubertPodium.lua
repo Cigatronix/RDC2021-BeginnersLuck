@@ -25,7 +25,7 @@ local function UnweldCubert()
     end
 
     local Camera = WorkspaceService.CurrentCamera
-    local TweenToPlayer = TweenService:Create(Camera, GenericTweenInformation, {Position = Character:GetPivot().Position + (Character:GetPivot().UpVector * 2)})
+    local TweenToPlayer = TweenService:Create(Camera, GenericTweenInformation, {CFrame = Character:GetPivot().Position + (Character:GetPivot().UpVector * 2)})
     TweenToPlayer:Play()
     TweenToPlayer.Completed:Wait()
     Camera.CameraType = Enum.CameraType.Custom
@@ -61,7 +61,7 @@ local function WeldCubert(PromptParent)
 
     local Camera = WorkspaceService.CurrentCamera
     Camera.CameraType = Enum.CameraType.Scriptable
-    local TweenToCubert = TweenService:Create(Camera, GenericTweenInformation, {Position = Cubert:GetPivot().Position})
+    local TweenToCubert = TweenService:Create(Camera, GenericTweenInformation, {CFrame = Cubert:GetPivot()})
     TweenToCubert:Play()
     --TODO: Check if the thing is going to be facing forward, also how should we handle rotation?
 end
