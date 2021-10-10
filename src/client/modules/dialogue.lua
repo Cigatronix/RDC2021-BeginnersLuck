@@ -157,7 +157,7 @@ local function ClearQueue() -- Pops the front of the queue when the object is do
 	if #DialogueQueue == 0 then
 		return
 	end
-	if DialogueQueue[1]["Duration"] - time() <= 0 then
+	if DialogueQueue[1]["Expiration"] - time() <= 0 then
 		if #DialogueQueue == 1 then --Last Item
 			if DialogueQueue[1]["RemoteTag"] ~= nil then
 				local Remote = Remotes:FindFirstChild(
@@ -197,15 +197,22 @@ Dialogue.Speak =
 			TimeTotal += Text["Duration"]
 		end
 
+		local Expiration = Duration + time() + TimeTotal
+		if #DialogueQueue > 0 then
+			-- print("Shedding",DialogueQueue[1]["Expiration"] - time(),"seconds")
+			Expiration -= (DialogueQueue[1]["Expiration"] - time())
+		end
+		-- print("Expiration:", Duration + time() + TimeTotal)
+
 		table.insert(DialogueQueue, {
 			["String"] = String,
 			["Emote"] = Emote,
 			["Duration"] = Duration,
+			["Expiration"] = Duration + time() + TimeTotal,
 			["RemoteTag"] = RemoteTag,
 			["CallbackType"] = CallbackType,
 		})
 
-		Duration += time()
 		if CallbackType then
 			Speak(DialogueQueue[1]["String"], DialogueQueue[1]["Emote"], CallbackType)
 		else
