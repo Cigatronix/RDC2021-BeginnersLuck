@@ -41,5 +41,5 @@ resetLevelRemote.OnServerEvent:Connect(function()
 		return
 	end
 
-	resetGrid()
+	resetGrid(true)
 end)

@@ -110,7 +110,8 @@ local function validateAnswer()
 	local levelNumber = getOrSetGlobalLevel.getGlobalLevel()
 	local levelGridInformation = LevelConfig[tostring(levelNumber)]
 
-	local requiredTiles = getRequiredTiles(levelNumber)
+	local requiredTiles = getRequiredTiles()
+	warn("REQUIRED " .. tostring(requiredTiles))
 	local matchingTiles = 0
 	for _, gridData in pairs(gridState) do
 		if gridData.level ~= levelNumber then
@@ -131,6 +132,7 @@ local function validateAnswer()
 			end
 		end
 	end
+	warn("HAS " .. tostring(matchingTiles))
 
 	return matchingTiles == requiredTiles
 end
@@ -287,7 +289,6 @@ function handleTile(position, tileIndex)
 
 		local canSelectTile = checkProgress(levelNumber)
 		if not canSelectTile then
-			warn(canSelectTile)
 			gridData.isSelected = true
 			local isAnswerValid = validateAnswer(levelNumber)
 
