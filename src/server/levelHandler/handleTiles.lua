@@ -287,6 +287,7 @@ function handleTile(position, tileIndex)
 
 		local canSelectTile = checkProgress(levelNumber)
 		if not canSelectTile then
+			warn(canSelectTile)
 			gridData.isSelected = true
 			local isAnswerValid = validateAnswer(levelNumber)
 
@@ -320,4 +321,5 @@ end
 return {
 	handleTile = handleTile,
 	findTile = findTile,
+	resetGrid = resetGrid,
 }
