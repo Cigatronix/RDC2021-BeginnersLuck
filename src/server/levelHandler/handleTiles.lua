@@ -584,7 +584,6 @@ function handleTile(position, tileIndex, isBroken)
 		local newTile
 		if gridData.tileObject.Name == "Broken" then
 			newTile = tiles.BrokenNoColor:Clone()
-			print("Parenting new broken tile")
 		else
 			newTile = tiles.NoColor:Clone()
 		end
