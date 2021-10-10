@@ -81,6 +81,7 @@ local function ToggleCubertWeld(Prompt, PromptParent)
         Prompt.ActionText = "Remove cubert"
         colorUIToggle.Enable()
     end
+    Cubert:SetAttribute("IS_WELDED", not Cubert:GetAttribute("IS_WELDED"))
 end
 
 for _, Prompt in ipairs(CollectionService:GetTagged("CUBERT_PROMPT")) do
