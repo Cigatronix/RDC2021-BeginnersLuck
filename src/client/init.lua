@@ -151,7 +151,6 @@ level3Complete.OnClientEvent:Connect(function()
 end)
 
 level4Complete.OnClientEvent:Connect(function()
-	hud.Enabled = false
 	hud.Parent.Idle.Enabled = false
 	hud.Parent.BSOD.Enabled = true
 
