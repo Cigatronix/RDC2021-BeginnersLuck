@@ -77,6 +77,10 @@ end)
 local LastSelectedColor = ""
 
 LightRemote.OnServerEvent:Connect(function(Player, color)
+	if not color then
+		return
+	end
+
 	if Player:GetAttribute("CUBUG_ON") == true then
 		color = "Broken" .. color
 	end
