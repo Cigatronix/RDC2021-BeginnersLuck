@@ -19,6 +19,9 @@ end
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 local HUD = PlayerGui:WaitForChild("HUD")
 local ColorFrame = HUD:WaitForChild("ColorFrame")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local ColorRemote = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("LightSpecificTileColor")
 
 colorUIToggle.Enable = function()
     ColorFrame.Visible = true
@@ -51,5 +54,9 @@ colorUIToggle.ToggleColor = function(ColorName)
         end
     end
 end
+
+LocalPlayer:GetAttributeChangedSignal("SELECTED_COLOR"):Connect(function()
+    ColorRemote:FireServer()
+end)
 
 return colorUIToggle
