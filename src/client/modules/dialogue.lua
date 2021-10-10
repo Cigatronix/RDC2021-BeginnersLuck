@@ -19,6 +19,8 @@ local Dialogue = {}
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local TweenService = game:GetService("TweenService")
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Remotes = ReplicatedStorage:WaitForChild("Remotes")
 local RunService = game:GetService("RunService")
 
 local GenericTweenInformation = TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.In)
@@ -35,6 +37,7 @@ local Emotes = {
     ["SARCASTIC"] = "rbxassetid://7693966885",
     ["JOY"] = "rbxassetid://7693966628",
 }
+
 local function TweenOutText()
     local TextBox = DialogueMain:FindFirstChild("TextFrame")
     local SpeakerName = DialogueMain:FindFirstChild("Speaker")
@@ -100,6 +103,18 @@ local function ClearQueue() -- Pops the front of the queue when the object is do
     if #DialogueQueue == 0 then return end
     -- warn(DialogueQueue[1]["Duration"] - time())
     if DialogueQueue[1]["Duration"] - time() <= 0 then
+        if #DialogueQueue == 1 then --Last Item
+            if DialogueQueue[1]["RemoteTag"] ~= nil then
+                local Remote = Remotes:FindFirstChild("StartLevel"..tostring(game:GetService("Workspace"):GetAttribute("PLAYER_LEVEL")))
+                -- warn("StartLevel"..tostring(game:GetService("Workspace"):GetAttribute("PLAYER_LEVEL")))
+                -- warn(Remote)
+                if Remote then
+                    Remote:FireServer()
+                else
+                    warn("Exception occured, unable to find remote")
+                end
+            end
+        end
         table.remove(DialogueQueue, 1)
         if #DialogueQueue > 0 then
             DialogueQueue[1]["Duration"] += time()
@@ -112,7 +127,7 @@ local function ClearQueue() -- Pops the front of the queue when the object is do
     end
 end
 
-Dialogue.Speak = function(String, Emote, Duration) --Public facing speak function. This adds the object to the queue, and if empty, plays it.
+Dialogue.Speak = function(String, Emote, Duration, RemoteTag) --Public facing speak function. This adds the object to the queue, and if empty, plays it.
     local TimeTotal = 0
     for _, Text in ipairs(DialogueQueue) do
         TimeTotal += Text["Duration"]
@@ -120,10 +135,10 @@ Dialogue.Speak = function(String, Emote, Duration) --Public facing speak functio
 	if #DialogueQueue == 0 then
 		warn("Dialogue queue is 0 for "..String)
 		Duration += time()
-		table.insert(DialogueQueue, {["String"] = String, ["Emote"] = Emote, ["Duration"] = Duration}) --TODO: Delet this
+		table.insert(DialogueQueue, {["String"] = String, ["Emote"] = Emote, ["Duration"] = Duration, ["RemoteTag"] = RemoteTag}) --TODO: Delet this
 		Speak(DialogueQueue[1]["String"], DialogueQueue[1]["Emote"])
 	else
-		table.insert(DialogueQueue, {["String"] = String, ["Emote"] = Emote, ["Duration"] = Duration})
+		table.insert(DialogueQueue, {["String"] = String, ["Emote"] = Emote, ["Duration"] = Duration, ["RemoteTag"] = RemoteTag})
 	end
 end
 

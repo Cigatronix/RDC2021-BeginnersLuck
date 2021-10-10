@@ -1,5 +1,8 @@
 --- ( Services ) ---
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+
+Workspace:SetAttribute("PLAYER_LEVEL", 1)
 
 --- ( Utility Functions ) ---
 local generateLevelGrid = require(script.generateLevelGrid).generateLevelGrid
