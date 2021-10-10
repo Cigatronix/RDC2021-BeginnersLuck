@@ -7,11 +7,16 @@ local Remotes = ReplicatedStorage:WaitForChild("Remotes")
 local LightSpecificTileColor = Remotes:WaitForChild("LightSpecificTileColor")
 
 local LocalPlayer = game:GetService("Players").LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+local HUD = PlayerGui:WaitForChild("HUD")
+local Controls = HUD:WaitForChild("Controls")
+local ExitCubert = Controls:WaitForChild("ExitCubert")
 local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 
 local colorUIToggle = require(script.Parent.colorUIToggle)
 
 local GenericTweenInformation = TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+local UserInputService = game:GetService("UserInputService")
 
 local CubertWeld
 
@@ -74,6 +79,12 @@ local function WeldCubert(PromptParent)
     --TODO: Check if the thing is going to be facing forward, also how should we handle rotation?
 end
 
+local function ToggleCubertText()
+    ExitCubert.Visible = not ExitCubert.Visible
+end
+
+local LastPrompt = nil
+
 local function ToggleCubertWeld(Prompt, PromptParent)
     if Cubert:GetAttribute("IS_WELDED") == true then
         UnweldCubert()
@@ -85,7 +96,10 @@ local function ToggleCubertWeld(Prompt, PromptParent)
         Prompt.ActionText = "Remove cubert"
         colorUIToggle.Enable()
     end
+    ToggleCubertText()
+    Prompt.Enabled = not Prompt.Enabled
     Cubert:SetAttribute("IS_WELDED", not Cubert:GetAttribute("IS_WELDED"))
+    LastPrompt = Prompt
 end
 
 for _, Prompt in ipairs(CollectionService:GetTagged("CUBERT_PROMPT")) do
@@ -93,5 +107,12 @@ for _, Prompt in ipairs(CollectionService:GetTagged("CUBERT_PROMPT")) do
         ToggleCubertWeld(Prompt, Prompt.Parent)
     end)
 end
+
+UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
+    if gameProcessedEvent then return end
+    if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.E and ExitCubert.Visible == true then
+        ToggleCubertWeld(LastPrompt, nil)
+    end
+end)
 
 return CubertPodium
