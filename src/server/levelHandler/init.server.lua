@@ -115,13 +115,13 @@ ResetGridFromBirdsEyeView.OnServerEvent:Connect(function(player)
 end)
 
 local lastSelectedColor = ""
-local lastReceived = 0
+-- local lastReceived = 0
 ToggleColor.OnServerEvent:Connect(function(player, specifiedColor)
-	local now = time()
-	if now - lastReceived < 0.4 then
-		return
-	end
-	lastReceived = now
+	-- local now = time()
+	-- if now - lastReceived < 0.4 then
+	-- 	return
+	-- end
+	-- lastReceived = now
 
 	player:SetAttribute("SELECTED_COLOR", specifiedColor)
 
@@ -144,4 +144,5 @@ end)
 
 game.Players.PlayerAdded:Connect(function(Player)
 	Player:SetAttribute("CUBUG_ON", false)
+	Player:SetAttribute("SELECTED_COLOR", "")
 end)

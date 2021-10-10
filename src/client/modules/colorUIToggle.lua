@@ -13,15 +13,15 @@ local ToggleColor = game:GetService("ReplicatedStorage"):FindFirstChild("Remotes
 
 local colorUIToggle = {}
 
-if LocalPlayer:GetAttribute("SELECTED_COLOR") == nil then
-	ToggleColor:FireServer("")
-end
+-- if LocalPlayer:GetAttribute("SELECTED_COLOR") == nil then
+-- 	ToggleColor:FireServer("")
+-- end
 
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 local HUD = PlayerGui:WaitForChild("HUD")
 local ColorFrame = HUD:WaitForChild("ColorFrame")
 
-local lastChecked = 0
+-- local lastChecked = 0
 
 colorUIToggle.Enable = function()
 	ColorFrame.Visible = true
@@ -32,16 +32,16 @@ colorUIToggle.Disable = function()
 end
 
 colorUIToggle.ToggleColor = function(ColorName)
-	local now = time()
-	if now - lastChecked < 0.4 then
-		return
-	end
-	lastChecked = now
+	-- local now = time()
+	-- if now - lastChecked < 0.4 then
+	-- 	return
+	-- end
+	-- lastChecked = now
 
 	if LocalPlayer:GetAttribute("SELECTED_COLOR") == ColorName then
 		for _, Button in ipairs(CollectionService:GetTagged("COLOR_BUTTON")) do
 			Button.Size = DefaultSize
-			ToggleColor:FireServer(ColorName)
+			ToggleColor:FireServer("")
 		end
 		return
 	end
@@ -51,7 +51,9 @@ colorUIToggle.ToggleColor = function(ColorName)
 			Button.Size = DefaultSize
 		else
 			Button.Size = UDim2.fromScale(0.9, 0.9) --TODO: Tween lol
-			ToggleColor:FireServer(ColorName)
+			if Button.Parent.Parent.Parent.Parent.Parent ~= game:GetService("StarterGui") then
+				ToggleColor:FireServer(ColorName)
+			end
 		end
 	end
 end

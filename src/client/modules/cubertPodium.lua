@@ -67,19 +67,6 @@ local function WeldCubert(PromptParent)
 	CubertWeld.Part1 = PodiumBase
 	CubertWeld.Parent = Cubert.PrimaryPart
 
-	--[[
-        TODO:
-            - Anchor player -> WalkSpeed 0 //
-            - Fade to black (or maybe tween camera? /shrug)
-            - UI on //TODO: Add tweening to color UI
-            - View on --> It might just work by default?
-            - Camera set to base //
-
-
-            - Invisible player's cube //
-            - Visible podium cube //
-            --> Just weld it lmao
-    ]]
 	local Humanoid = Character:FindFirstChild("Humanoid")
 	if Humanoid and Humanoid.WalkSpeed ~= 0 then
 		Humanoid.WalkSpeed = 0
@@ -87,7 +74,6 @@ local function WeldCubert(PromptParent)
 
 	local Camera = WorkspaceService.CurrentCamera
 	Camera.CameraType = Enum.CameraType.Scriptable
-	-- local TweenToCubert = TweenService:Create(Camera, GenericTweenInformation, {CFrame = Cubert:GetPivot()})
 	local TweenToCubert = TweenService:Create(
 		Camera,
 		GenericTweenInformation,
@@ -97,12 +83,10 @@ local function WeldCubert(PromptParent)
 
 	ExitCubert.Visible = true
 	toggleProximityPrompts(false)
-
-	--TODO: Check if the thing is going to be facing forward, also how should we handle rotation?
 end
 
-local function ToggleCubertText()
-	ExitCubert.Visible = not ExitCubert.Visible
+local function SetCubertText(IsEnabled)
+	ExitCubert.Visible = IsEnabled
 end
 
 local LastPrompt = nil
@@ -113,13 +97,15 @@ local function ToggleCubertWeld(Prompt, PromptParent)
 		Prompt.ActionText = "Add cubert"
 		colorUIToggle.Disable()
 		LightSpecificTileColor:FireServer("")
+		SetCubertText(false)
 	else
 		WeldCubert(PromptParent)
 		Prompt.ActionText = "Remove cubert"
 		colorUIToggle.Enable()
+		SetCubertText(true)
 	end
-	ToggleCubertText()
-	Prompt.Enabled = not Prompt.Enabled
+	-- ToggleCubertText()
+	-- Prompt.Enabled = not Prompt.Enabled
 	Cubert:SetAttribute("IS_WELDED", not Cubert:GetAttribute("IS_WELDED"))
 	LastPrompt = Prompt
 end
