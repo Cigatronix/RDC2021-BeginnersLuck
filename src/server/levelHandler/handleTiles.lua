@@ -129,7 +129,6 @@ local function validateAnswer()
 				end
 
 				matchingTiles += 1
-				print(gridData.tileIndex, matchingTiles)
 			end
 		end
 	end
