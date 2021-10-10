@@ -20,8 +20,8 @@ local level4Folder = workspace:FindFirstChild("Level 4")
 
 --- ( Remotes ) ---
 local level1Complete = remotes.Level1Complete
-local level2Complete = remotes.Level1Complete
-local level3Complete = remotes.Level1Complete
+local level2Complete = remotes.Level2Complete
+local level3Complete = remotes.Level3Complete
 
 local startLevel1 = remotes.StartLevel1
 local startLevel2 = remotes.StartLevel2
