@@ -46,15 +46,17 @@ local instance2 = level2Folder.NextLevelElevatorInside.Floor
 local instance3 = level3Folder.NextLevelElevatorInside.Floor
 
 --- ( Module Start ) ===
-DialogueHandler.setCoreGui(false)
+local function start()
+	DialogueHandler.setCoreGui(false)
 
-CubertPoduim.LoadPrompts()
-ColorControls.HandleColorButtons()
+	CubertPoduim.LoadPrompts()
+	ColorControls.HandleColorButtons()
 
-DialogueHandler.displayDialogue("Cubert", 1, true)
-DialogueHandler.displayDialogue("Cubert", 2, true)
-DialogueHandler.displayDialogue("Cubert", 3, false)
-ElevatorControl.openLobbyElevator()
+	DialogueHandler.displayDialogue("Cubert", 1, true)
+	DialogueHandler.displayDialogue("Cubert", 2, true)
+	DialogueHandler.displayDialogue("Cubert", 3, false)
+	ElevatorControl.openLobbyElevator()
+end
 
 --- ( Connections ) ---
 Lobby_NextLevelElevatorInside.Touched:Connect(function(hit)
@@ -179,3 +181,7 @@ RunService.Heartbeat:Connect(function()
 	hasInteractedWithLobbyDoor = true
 	skipLevel1:FireServer()
 end)
+
+return {
+	start = start,
+}
