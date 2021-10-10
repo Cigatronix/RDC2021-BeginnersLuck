@@ -45,7 +45,7 @@ local LevelDialogue = {
 		{ "..Don't put me down anywhere else. Please.", "ANGRY", 5 },
 	},
 	{
-		{ "Nice one. Hopefully the next one won't take you too long.", "NEUTRAL", 5 },
+		{ "Nice one. Hopefully the next one won't take you too long.", "NEUTRAL", 5, true },
 	},
 }
 
