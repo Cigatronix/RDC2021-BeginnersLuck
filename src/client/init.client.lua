@@ -3,7 +3,7 @@ local Defaults = require(script.modules.defaults)
 local ColorControls = require(script.modules.colorcontrols)
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local LevelDialogue = require(ReplicatedStorage.shared.strings.LevelDialogue)
+local LevelDialogue = require(ReplicatedStorage.Shared.strings.levelDialogue)
 
 --TODO: Remove in production, this is purely for testing the dialogue system with real data.
 for _, DialogueTree in ipairs(LevelDialogue) do
