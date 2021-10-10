@@ -15,14 +15,14 @@ local startLevel2Remote = remotesFolder.StartLevel2
 local startLevel3Remote = remotesFolder.StartLevel3
 local resetLevelRemote = remotesFolder.ResetLevel
 
-getOrSetGlobalLevel.setGlobalLevel(2)
+getOrSetGlobalLevel.setGlobalLevel(3)
 
 --- ( Connections ) ---
 startLevel1Remote.OnServerEvent:Connect(function()
 	--getOrSetGlobalLevel.setGlobalLevel(1)
 	--generateLevelGrid(1)
-	getOrSetGlobalLevel.setGlobalLevel(2)
-	generateLevelGrid(2)
+	getOrSetGlobalLevel.setGlobalLevel(3)
+	generateLevelGrid(3)
 end)
 
 startLevel2Remote.OnServerEvent:Connect(function()
